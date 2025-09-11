@@ -32,6 +32,7 @@
 			color: white;
 			padding: 30px;
 			text-align: center;
+			position: relative;
 		}
 
 		.header h1 {
@@ -42,6 +43,25 @@
 		.header p {
 			opacity: 0.9;
 			font-size: 1.1em;
+		}
+
+		.education-btn {
+			position: absolute;
+			top: 20px;
+			right: 30px;
+			background: linear-gradient(45deg, #e74c3c, #c0392b);
+			color: white;
+			text-decoration: none;
+			padding: 12px 25px;
+			border-radius: 25px;
+			font-weight: bold;
+			transition: all 0.3s ease;
+			box-shadow: 0 4px 15px rgba(231,76,60,0.3);
+		}
+
+		.education-btn:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 6px 20px rgba(231,76,60,0.4);
 		}
 
 		.content {
@@ -194,6 +214,7 @@
 <body>
 	<div class="container">
 		<div class="header">
+			<a href="education.html" class="education-btn">🎓 Learn Git</a>
 			<h1>🔄 Local Git Explorer</h1>
 			<p>Explore and interact with your local Git repository</p>
 		</div>

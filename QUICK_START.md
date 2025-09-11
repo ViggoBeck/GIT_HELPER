@@ -4,7 +4,7 @@
 
 1. **Open terminal in this directory**
 2. **Run:** `npm start` or `./start.sh`
-3. **Open browser:** `http://localhost:3001`
+3. **Open browser:** `http://localhost:8000`
 
 ## Alternative Commands:
 ```bash
