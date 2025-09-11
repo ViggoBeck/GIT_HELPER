@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Local Git Explorer</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		body {
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			min-height: 100vh;
+			padding: 20px;
+		}
+
+		.container {
+			max-width: 1200px;
+			margin: 0 auto;
+			background: white;
+			border-radius: 15px;
+			box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+			overflow: hidden;
+		}
+
+		.header {
+			background: linear-gradient(45deg, #2c3e50, #34495e);
+			color: white;
+			padding: 30px;
+			text-align: center;
+		}
+
+		.header h1 {
+			font-size: 2.5em;
+			margin-bottom: 10px;
+		}
+
+		.header p {
+			opacity: 0.9;
+			font-size: 1.1em;
+		}
+
+		.content {
+			padding: 30px;
+		}
+
+		.grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+			gap: 20px;
+			margin-bottom: 30px;
+		}
+
+		.card {
+			background: #f8f9fa;
+			border: 2px solid #e9ecef;
+			border-radius: 10px;
+			padding: 20px;
+			transition: all 0.3s ease;
+		}
+
+		.card:hover {
+			border-color: #007bff;
+			transform: translateY(-2px);
+			box-shadow: 0 5px 15px rgba(0,123,255,0.2);
+		}
+
+		.card h3 {
+			color: #2c3e50;
+			margin-bottom: 15px;
+			font-size: 1.3em;
+		}
+
+		.btn {
+			background: linear-gradient(45deg, #007bff, #0056b3);
+			color: white;
+			border: none;
+			padding: 10px 20px;
+			border-radius: 5px;
+			cursor: pointer;
+			font-size: 14px;
+			transition: all 0.3s ease;
+			margin: 5px;
+		}
+
+		.btn:hover {
+			transform: translateY(-1px);
+			box-shadow: 0 3px 10px rgba(0,123,255,0.3);
+		}
+
+		.btn-success {
+			background: linear-gradient(45deg, #28a745, #20c997);
+		}
+
+		.btn-warning {
+			background: linear-gradient(45deg, #ffc107, #fd7e14);
+		}
+
+		.btn-danger {
+			background: linear-gradient(45deg, #dc3545, #e83e8c);
+		}
+
+		.output {
+			background: #2d3748;
+			color: #e2e8f0;
+			padding: 15px;
+			border-radius: 8px;
+			font-family: 'Courier New', monospace;
+			font-size: 13px;
+			white-space: pre-wrap;
+			max-height: 300px;
+			overflow-y: auto;
+			margin-top: 15px;
+			border: 1px solid #4a5568;
+		}
+
+		.success {
+			border-left: 4px solid #28a745;
+			background-color: #d4edda;
+		}
+
+		.error {
+			border-left: 4px solid #dc3545;
+			background-color: #f8d7da;
+			color: #721c24;
+		}
+
+		.input-group {
+			margin-bottom: 15px;
+		}
+
+		.input-group label {
+			display: block;
+			margin-bottom: 5px;
+			font-weight: 500;
+			color: #2c3e50;
+		}
+
+		.input-group input, .input-group textarea {
+			width: 100%;
+			padding: 10px;
+			border: 2px solid #e9ecef;
+			border-radius: 5px;
+			font-size: 14px;
+			transition: border-color 0.3s ease;
+		}
+
+		.input-group input:focus, .input-group textarea:focus {
+			outline: none;
+			border-color: #007bff;
+			box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+		}
+
+		.status-indicator {
+			display: inline-block;
+			width: 12px;
+			height: 12px;
+			border-radius: 50%;
+			margin-right: 8px;
+		}
+
+		.status-clean { background-color: #28a745; }
+		.status-dirty { background-color: #ffc107; }
+		.status-error { background-color: #dc3545; }
+
+		.repo-info {
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			color: white;
+			padding: 20px;
+			border-radius: 10px;
+			margin-bottom: 20px;
+		}
+
+		.loading {
+			display: inline-block;
+			width: 20px;
+			height: 20px;
+			border: 2px solid #f3f3f3;
+			border-top: 2px solid #007bff;
+			border-radius: 50%;
+			animation: spin 1s linear infinite;
+		}
+
+		@keyframes spin {
+			0% { transform: rotate(0deg); }
+			100% { transform: rotate(360deg); }
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="header">
+			<h1>🔄 Local Git Explorer</h1>
+			<p>Explore and interact with your local Git repository</p>
+		</div>
+
+		<div class="content">
+			<div class="repo-info" id="repoInfo">
+				<h3>📂 Repository Information</h3>
+				<div id="repoDetails">Loading...</div>
+			</div>
+
+			<div class="grid">
+				<!-- Repository Status -->
+				<div class="card">
+					<h3>📊 Repository Status</h3>
+					<button class="btn" onclick="getGitStatus()">Check Status</button>
+					<button class="btn btn-warning" onclick="getGitDiff()">Show Changes</button>
+					<div class="output" id="statusOutput"></div>
+				</div>
+
+				<!-- Commit History -->
+				<div class="card">
+					<h3>📜 Commit History</h3>
+					<button class="btn" onclick="getGitLog()">Show Recent Commits</button>
+					<div class="output" id="logOutput"></div>
+				</div>
+
+				<!-- Branch Management -->
+				<div class="card">
+					<h3>🌿 Branch Management</h3>
+					<button class="btn" onclick="getGitBranches()">List Branches</button>
+					<div class="input-group">
+						<label>Create New Branch:</label>
+						<input type="text" id="newBranchName" placeholder="feature/new-feature">
+						<button class="btn btn-success" onclick="createBranch()">Create Branch</button>
+					</div>
+					<div class="input-group">
+						<label>Switch Branch:</label>
+						<input type="text" id="switchBranchName" placeholder="main">
+						<button class="btn btn-warning" onclick="switchBranch()">Switch</button>
+					</div>
+					<div class="output" id="branchOutput"></div>
+				</div>
+
+				<!-- Remote Information -->
+				<div class="card">
+					<h3>🌐 Remote Repositories</h3>
+					<button class="btn" onclick="getGitRemotes()">Show Remotes</button>
+					<div class="output" id="remoteOutput"></div>
+				</div>
+
+				<!-- Commit Changes -->
+				<div class="card">
+					<h3>💾 Commit Changes</h3>
+					<div class="input-group">
+						<label>Files to add (space-separated):</label>
+						<input type="text" id="filesToAdd" placeholder=". (for all files)">
+					</div>
+					<div class="input-group">
+						<label>Commit Message:</label>
+						<textarea id="commitMessage" rows="3" placeholder="Enter your commit message here..."></textarea>
+					</div>
+					<button class="btn btn-success" onclick="commitChanges()">Commit</button>
+					<div class="output" id="commitOutput"></div>
+				</div>
+
+				<!-- Git Configuration -->
+				<div class="card">
+					<h3>⚙️ Git Configuration</h3>
+					<button class="btn" onclick="getGitConfig()">Show Config</button>
+					<div class="output" id="configOutput"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		// Utility function to display output
+		function displayOutput(elementId, data, isSuccess = true) {
+			const element = document.getElementById(elementId);
+			element.className = `output ${isSuccess ? 'success' : 'error'}`;
+			element.textContent = data.output || data;
+		}
+
+		// Utility function to show loading
+		function showLoading(elementId) {
+			const element = document.getElementById(elementId);
+			element.innerHTML = '<div class="loading"></div> Loading...';
+		}
+
+		// API call wrapper
+		async function apiCall(url, options = {}) {
+			try {
+				const response = await fetch(url, options);
+				const data = await response.json();
+				return data;
+			} catch (error) {
+				return { success: false, output: `Error: ${error.message}` };
+			}
+		}
+
+		// Git Status
+		async function getGitStatus() {
+			showLoading('statusOutput');
+			const data = await apiCall('/api/git/status');
+			const statusText = data.output || 'Working tree clean';
+			const indicator = data.success && !data.output ?
+				'<span class="status-indicator status-clean"></span>Clean' :
+				'<span class="status-indicator status-dirty"></span>Changes detected';
+			displayOutput('statusOutput', `${indicator}\n\n${statusText}`, data.success);
+		}
+
+		// Git Log
+		async function getGitLog() {
+			showLoading('logOutput');
+			const data = await apiCall('/api/git/log');
+			displayOutput('logOutput', data.output || 'No commits found', data.success);
+		}
+
+		// Git Branches
+		async function getGitBranches() {
+			showLoading('branchOutput');
+			const data = await apiCall('/api/git/branches');
+			displayOutput('branchOutput', data.output || 'No branches found', data.success);
+		}
+
+		// Git Remotes
+		async function getGitRemotes() {
+			showLoading('remoteOutput');
+			const data = await apiCall('/api/git/remotes');
+			displayOutput('remoteOutput', data.output || 'No remotes configured', data.success);
+		}
+
+		// Git Diff
+		async function getGitDiff() {
+			showLoading('statusOutput');
+			const data = await apiCall('/api/git/diff');
+			displayOutput('statusOutput', data.output || 'No changes detected', data.success);
+		}
+
+		// Create Branch
+		async function createBranch() {
+			const branchName = document.getElementById('newBranchName').value.trim();
+			if (!branchName) {
+				alert('Please enter a branch name');
+				return;
+			}
+
+			showLoading('branchOutput');
+			const data = await apiCall('/api/git/branch', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ branchName })
+			});
+			displayOutput('branchOutput', data.output, data.success);
+			document.getElementById('newBranchName').value = '';
+		}
+
+		// Switch Branch
+		async function switchBranch() {
+			const branchName = document.getElementById('switchBranchName').value.trim();
+			if (!branchName) {
+				alert('Please enter a branch name');
+				return;
+			}
+
+			showLoading('branchOutput');
+			const data = await apiCall('/api/git/checkout', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ branchName })
+			});
+			displayOutput('branchOutput', data.output, data.success);
+			document.getElementById('switchBranchName').value = '';
+		}
+
+		// Commit Changes
+		async function commitChanges() {
+			const message = document.getElementById('commitMessage').value.trim();
+			const files = document.getElementById('filesToAdd').value.trim();
+
+			if (!message) {
+				alert('Please enter a commit message');
+				return;
+			}
+
+			showLoading('commitOutput');
+			const data = await apiCall('/api/git/commit', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					message,
+					files: files ? files.split(' ') : ['.']
+				})
+			});
+			displayOutput('commitOutput', data.output, data.success);
+
+			if (data.success) {
+				document.getElementById('commitMessage').value = '';
+				document.getElementById('filesToAdd').value = '';
+			}
+		}
+
+		// Get Git Config
+		async function getGitConfig() {
+			showLoading('configOutput');
+			const data = await apiCall('/api/git/info');
+			if (data.config) {
+				displayOutput('configOutput', data.config.output || 'No local config found', data.config.success);
+			} else {
+				displayOutput('configOutput', 'Not a git repository', false);
+			}
+		}
+
+		// Load repository info on page load
+		async function loadRepoInfo() {
+			const data = await apiCall('/api/git/info');
+			const repoDetails = document.getElementById('repoDetails');
+
+			if (data.isGitRepo) {
+				repoDetails.innerHTML = `
+					<p><strong>📁 Path:</strong> ${data.repositoryPath}</p>
+					<p><strong>✅ Git Repository:</strong> Yes</p>
+					<p><strong>📂 Git Directory:</strong> ${data.gitDir}</p>
+				`;
+			} else {
+				repoDetails.innerHTML = `
+					<p><strong>📁 Path:</strong> ${data.repositoryPath}</p>
+					<p><strong>❌ Git Repository:</strong> No (.git directory not found)</p>
+				`;
+			}
+		}
+
+		// Initialize page
+		document.addEventListener('DOMContentLoaded', () => {
+			loadRepoInfo();
+			getGitStatus();
+		});
+	</script>
+</body>
+</html>

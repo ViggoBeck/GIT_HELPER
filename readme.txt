@@ -1,1 +1,0 @@
-Hello Git, this is my local git repository
