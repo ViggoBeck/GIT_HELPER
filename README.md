@@ -10,6 +10,7 @@ A Node.js web application that provides a visual interface to explore and intera
 - 🌐 **Remote Information**: Display configured remote repositories
 - 💾 **Commit Changes**: Add and commit files with custom messages
 - ⚙️ **Git Configuration**: View local git configuration settings
+- 🤖 **AI Safety Education**: Learn safe Git workflows when working with AI coding assistants
 
 ## Prerequisites
 

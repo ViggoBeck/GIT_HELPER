@@ -8,7 +8,7 @@
 - **Interactive Examples** - Click-to-copy command examples
 - **Knowledge Quiz** - Test your understanding with instant feedback
 
-### 🏗️ **Six Core Learning Sections**
+### 🏗️ **Seven Core Learning Sections**
 
 #### 1. 🏗️ **Git Basics**
 - Repository fundamentals
@@ -38,16 +38,25 @@
 - Advanced configuration tips
 - Common mistakes to avoid
 
-#### 5. 🔧 **Troubleshooting**
+#### 5. 🤖 **AI Safety Workflows**
+- Safe Git workflows when working with AI coding assistants
+- Checkpoint strategy before AI interactions
+- Quick rollback techniques when AI breaks things
+- Branch strategies for AI experimentation
+- Best practices for reviewing AI-generated code
+- Emergency recovery from AI mistakes
+- Smart commit messages for AI-assisted work
+
+#### 6. 🔧 **Troubleshooting**
 - "Wrong branch" fixes
 - Undo strategies
 - Branch synchronization
 - Change inspection tools
 - Emergency recovery commands
 
-#### 6. 🎯 **Comprehensive Quiz System**
+#### 7. 🎯 **Comprehensive Quiz System**
 - **4 Difficulty Categories**: Beginner → Intermediate → Advanced → Real-World Scenarios
-- **28 Total Questions** covering all aspects of Git
+- **31 Total Questions** covering all aspects of Git including AI safety
 - **Instant Feedback** with explanations for each answer
 - **Score Tracking** across all categories
 - **Performance Analysis** with personalized recommendations
@@ -110,7 +119,7 @@ For beginners, follow this order:
 - Advanced troubleshooting tools (bisect, reflog)
 - Detached HEAD states
 
-### 💡 **Real-World Scenarios (8 questions)**
+### 💡 **Real-World Scenarios (11 questions)**
 - Handling sensitive data in commits
 - Team collaboration workflows
 - Emergency fixes with stashing
@@ -118,6 +127,9 @@ For beginners, follow this order:
 - File tracking and .gitignore issues
 - Commit history cleanup strategies
 - Code investigation with git blame
+- **AI Safety workflows** - checkpointing before AI assistance
+- **AI Recovery strategies** - rolling back AI mistakes
+- **AI Commit practices** - proper messaging for AI-assisted work
 
 ## 📊 **Quiz Features**
 
