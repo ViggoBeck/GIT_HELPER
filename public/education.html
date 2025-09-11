@@ -400,7 +400,6 @@
 			<button class="nav-btn" onclick="showSection('commands')">⚡ Commands</button>
 			<button class="nav-btn" onclick="showSection('workflows')">🔄 Workflows</button>
 			<button class="nav-btn" onclick="showSection('bestpractices')">✨ Best Practices</button>
-			<button class="nav-btn" onclick="showSection('aisafety')">🤖 AI Safety</button>
 			<button class="nav-btn" onclick="showSection('troubleshooting')">🔧 Troubleshooting</button>
 			<button class="nav-btn" onclick="showSection('quiz')">🎯 Quiz</button>
 			<a href="index.html" class="back-btn">← Back to Explorer</a>
@@ -682,166 +681,6 @@
 					build/<br>
 					dist/<br>
 					*.tmp
-				</div>
-			</div>
-		</div>
-
-		<!-- AI Safety Section -->
-		<div id="aisafety" class="content">
-			<h2>🤖 Safe Git Workflows with AI Assistants</h2>
-
-			<div class="best-practice">
-				<h4>🛡️ Why AI Safety Matters in Git</h4>
-				<p>AI coding assistants (ChatGPT, Claude, GitHub Copilot, etc.) are powerful tools, but they can sometimes generate incorrect code, introduce bugs, or make unexpected changes. Having a solid Git safety workflow protects your work and lets you experiment confidently!</p>
-			</div>
-
-			<div class="concept-grid">
-				<div class="concept-card">
-					<h3><span class="concept-icon">💾</span> The "Checkpoint" Strategy</h3>
-					<p>Always create a checkpoint (commit) before asking AI for help. This gives you a safe point to return to.</p>
-					<div class="command-example">
-						<span class="comment"># Before asking AI for help:</span><br>
-						<span class="command">git add .</span><br>
-						<span class="command">git commit -m "Safe checkpoint before AI assistance"</span><br><br>
-						<span class="comment"># Now it's safe to experiment with AI suggestions!</span>
-					</div>
-				</div>
-
-				<div class="concept-card">
-					<h3><span class="concept-icon">🔄</span> After AI Changes</h3>
-					<p>Review AI changes carefully, test them, then commit with clear messages indicating AI involvement.</p>
-					<div class="command-example">
-						<span class="comment"># After applying AI suggestions:</span><br>
-						<span class="command">git status</span> <span class="comment"># See what changed</span><br>
-						<span class="command">git diff</span> <span class="comment"># Review all changes</span><br>
-						<span class="command">git add .</span><br>
-						<span class="command">git commit -m "Add user validation (AI-assisted)"</span>
-					</div>
-				</div>
-
-				<div class="concept-card">
-					<h3><span class="concept-icon">⚡</span> Quick Rollback</h3>
-					<p>If AI broke something, you can quickly get back to your last working state.</p>
-					<div class="command-example">
-						<span class="comment"># If AI changes broke everything:</span><br>
-						<span class="command">git log --oneline -5</span> <span class="comment"># Find your checkpoint</span><br>
-						<span class="command">git reset --hard HEAD~1</span> <span class="comment"># Go back 1 commit</span><br><br>
-						<span class="comment"># Or go to specific checkpoint:</span><br>
-						<span class="command">git reset --hard &lt;checkpoint-hash&gt;</span>
-					</div>
-				</div>
-
-				<div class="concept-card">
-					<h3><span class="concept-icon">🌿</span> AI Experiment Branches</h3>
-					<p>For major AI suggestions, create a separate branch to experiment safely.</p>
-					<div class="command-example">
-						<span class="comment"># Create experiment branch:</span><br>
-						<span class="command">git checkout -b ai-experiment</span><br>
-						<span class="comment"># Try AI suggestions here...</span><br>
-						<span class="command">git add . && git commit -m "AI experiment"</span><br><br>
-						<span class="comment"># If good, merge back:</span><br>
-						<span class="command">git checkout main</span><br>
-						<span class="command">git merge ai-experiment</span><br><br>
-						<span class="comment"># If bad, just delete:</span><br>
-						<span class="command">git branch -D ai-experiment</span>
-					</div>
-				</div>
-			</div>
-
-			<div class="workflow-step">
-				<h4>🔄 The Complete AI Safety Workflow</h4>
-				<div class="command-example">
-					<span class="comment"># 1. Save current work (checkpoint)</span><br>
-					<span class="command">git add .</span><br>
-					<span class="command">git commit -m "Checkpoint before AI help"</span><br><br>
-
-					<span class="comment"># 2. Ask AI for help and apply changes</span><br>
-					<span class="comment"># (Apply AI suggestions to your code)</span><br><br>
-
-					<span class="comment"># 3. Review changes carefully</span><br>
-					<span class="command">git status</span> <span class="comment"># See what files changed</span><br>
-					<span class="command">git diff</span> <span class="comment"># Review all changes line by line</span><br><br>
-
-					<span class="comment"># 4. Test the changes</span><br>
-					<span class="comment"># Run your tests, try the app, make sure it works</span><br><br>
-
-					<span class="comment"># 5. If good - commit with AI notation</span><br>
-					<span class="command">git add .</span><br>
-					<span class="command">git commit -m "Implement error handling (AI-assisted)"</span><br><br>
-
-					<span class="comment"># 6. If bad - rollback to checkpoint</span><br>
-					<span class="command">git reset --hard HEAD~1</span> <span class="comment"># Back to checkpoint</span>
-				</div>
-			</div>
-
-			<div class="best-practice">
-				<h4>✨ Best Practices for AI + Git</h4>
-				<ul style="margin-left: 20px; margin-top: 10px;">
-					<li><strong>Small experiments:</strong> Ask AI for small changes, not complete rewrites</li>
-					<li><strong>Clear commit messages:</strong> Mark AI-assisted commits clearly</li>
-					<li><strong>Always review:</strong> Never blindly commit AI-generated code</li>
-					<li><strong>Test immediately:</strong> Run tests after each AI change</li>
-					<li><strong>One change at a time:</strong> Don't mix multiple AI suggestions in one commit</li>
-				</ul>
-			</div>
-
-			<div class="warning">
-				<h4>⚠️ Common AI + Git Mistakes</h4>
-				<ul style="margin-left: 20px; margin-top: 10px;">
-					<li><strong>No checkpoints:</strong> Applying AI changes without saving current work first</li>
-					<li><strong>Blind commits:</strong> Committing AI code without reviewing or testing</li>
-					<li><strong>Large batch changes:</strong> Asking AI to change too much at once</li>
-					<li><strong>Unclear history:</strong> Not marking which commits involved AI assistance</li>
-					<li><strong>No rollback plan:</strong> Not knowing how to undo AI changes quickly</li>
-				</ul>
-			</div>
-
-			<div class="concept-grid">
-				<div class="concept-card">
-					<h3><span class="concept-icon">🏷️</span> Smart Commit Messages</h3>
-					<div class="command-example">
-						<span class="comment"># Good AI commit messages:</span><br>
-						<span class="command">"Fix validation bug (AI-suggested fix)"</span><br>
-						<span class="command">"Refactor database queries (AI-assisted)"</span><br>
-						<span class="command">"Add error handling based on AI recommendation"</span><br><br>
-						<span class="comment"># Bad AI commit messages:</span><br>
-						"AI changes" | "Updated code" | "Fixed stuff"
-					</div>
-				</div>
-
-				<div class="concept-card">
-					<h3><span class="concept-icon">🆘</span> Emergency Recovery</h3>
-					<div class="command-example">
-						<span class="comment"># If AI completely broke your project:</span><br>
-						<span class="command">git reflog</span> <span class="comment"># See all recent actions</span><br>
-						<span class="command">git reset --hard HEAD@{5}</span> <span class="comment"># Go back 5 steps</span><br><br>
-						<span class="comment"># Or find your last good commit:</span><br>
-						<span class="command">git log --oneline --grep="checkpoint"</span><br>
-						<span class="command">git reset --hard &lt;checkpoint-hash&gt;</span>
-					</div>
-				</div>
-			</div>
-
-			<div class="tip">
-				<strong>🎯 Pro AI Workflow:</strong> Create a branch called `ai-playground` where you test all AI suggestions first. Only merge to main after thorough testing. This way your main branch stays stable while you experiment freely!
-
-				<div class="command-example" style="margin-top: 15px;">
-					<span class="command">git checkout -b ai-playground</span><br>
-					<span class="comment"># Test AI suggestions here safely</span><br>
-					<span class="command">git checkout main</span><br>
-					<span class="command">git merge ai-playground</span> <span class="comment"># When ready</span>
-				</div>
-			</div>
-
-			<div class="quiz-section">
-				<h4>🤔 Quick AI Safety Check</h4>
-				<div class="visual-diagram">
-					<strong>Before asking AI for help, ask yourself:</strong><br>
-					✅ Did I commit my current work?<br>
-					✅ Do I have a clear rollback plan?<br>
-					✅ Am I asking for a small, focused change?<br>
-					✅ Will I review the AI's suggestions carefully?<br>
-					✅ Do I have tests to verify the changes work?
 				</div>
 			</div>
 		</div>
@@ -1193,30 +1032,6 @@
 						<div class="quiz-option" onclick="selectAnswer(this, true)">B) Run git gc to garbage collect</div>
 						<div class="quiz-option" onclick="selectAnswer(this, false)">C) Reinstall Git</div>
 						<div class="quiz-option" onclick="selectAnswer(this, false)">D) Create a new repository</div>
-					</div>
-
-					<div class="quiz-question">
-						<h4>9. Before asking an AI assistant for code help, what should you do first?</h4>
-						<div class="quiz-option" onclick="selectAnswer(this, false)">A) Delete all your current work</div>
-						<div class="quiz-option" onclick="selectAnswer(this, true)">B) Create a checkpoint commit of your current work</div>
-						<div class="quiz-option" onclick="selectAnswer(this, false)">C) Create a new repository</div>
-						<div class="quiz-option" onclick="selectAnswer(this, false)">D) Switch to a different branch</div>
-					</div>
-
-					<div class="quiz-question">
-						<h4>10. An AI assistant gave you code that broke your project. How do you quickly recover?</h4>
-						<div class="quiz-option" onclick="selectAnswer(this, false)">A) Reinstall your IDE</div>
-						<div class="quiz-option" onclick="selectAnswer(this, false)">B) Start the project from scratch</div>
-						<div class="quiz-option" onclick="selectAnswer(this, true)">C) Use git reset --hard to return to your checkpoint</div>
-						<div class="quiz-option" onclick="selectAnswer(this, false)">D) Ask the AI to fix what it broke</div>
-					</div>
-
-					<div class="quiz-question">
-						<h4>11. What's the best commit message for AI-assisted changes?</h4>
-						<div class="quiz-option" onclick="selectAnswer(this, false)">A) "AI changes"</div>
-						<div class="quiz-option" onclick="selectAnswer(this, false)">B) "Updated code"</div>
-						<div class="quiz-option" onclick="selectAnswer(this, true)">C) "Add input validation (AI-assisted)"</div>
-						<div class="quiz-option" onclick="selectAnswer(this, false)">D) "Fixed stuff"</div>
 					</div>
 				</div>
 			</div>
