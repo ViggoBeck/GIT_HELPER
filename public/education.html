@@ -272,6 +272,107 @@
 			color: white;
 		}
 
+		.quiz-nav {
+			display: flex;
+			gap: 15px;
+			margin-bottom: 30px;
+			flex-wrap: wrap;
+			justify-content: center;
+		}
+
+		.quiz-nav-btn {
+			background: #e2e8f0;
+			color: #2d3748;
+			border: none;
+			padding: 12px 25px;
+			border-radius: 25px;
+			cursor: pointer;
+			font-size: 14px;
+			font-weight: 500;
+			transition: all 0.3s ease;
+		}
+
+		.quiz-nav-btn:hover {
+			background: #cbd5e0;
+			transform: translateY(-1px);
+		}
+
+		.quiz-nav-btn.active {
+			background: linear-gradient(45deg, #4299e1, #3182ce);
+			color: white;
+			transform: translateY(-2px);
+			box-shadow: 0 4px 15px rgba(66,153,225,0.3);
+		}
+
+		.quiz-category {
+			display: none;
+		}
+
+		.quiz-category.active {
+			display: block;
+		}
+
+		.quiz-results {
+			background: #f7fafc;
+			padding: 25px;
+			border-radius: 15px;
+			margin: 25px 0;
+			text-align: center;
+		}
+
+		.score-excellent {
+			background: linear-gradient(135deg, #48bb78, #38a169);
+			color: white;
+			padding: 20px;
+			border-radius: 10px;
+			margin: 15px 0;
+		}
+
+		.score-good {
+			background: linear-gradient(135deg, #4299e1, #3182ce);
+			color: white;
+			padding: 20px;
+			border-radius: 10px;
+			margin: 15px 0;
+		}
+
+		.score-needs-improvement {
+			background: linear-gradient(135deg, #ed8936, #dd6b20);
+			color: white;
+			padding: 20px;
+			border-radius: 10px;
+			margin: 15px 0;
+		}
+
+		.difficulty-indicator {
+			display: inline-block;
+			padding: 5px 12px;
+			border-radius: 15px;
+			font-size: 12px;
+			font-weight: bold;
+			margin-left: 10px;
+		}
+
+		.difficulty-beginner {
+			background: #c6f6d5;
+			color: #22543d;
+		}
+
+		.difficulty-intermediate {
+			background: #bee3f8;
+			color: #1a365d;
+		}
+
+		.difficulty-advanced {
+			background: #fed7d7;
+			color: #742a2a;
+		}
+
+		.difficulty-scenarios {
+			background: #e9d8fd;
+			color: #44337a;
+		}
+
 		@media (max-width: 768px) {
 			.concept-grid, .command-grid {
 				grid-template-columns: 1fr;
@@ -671,46 +772,274 @@
 		<div id="quiz" class="content">
 			<h2>🎯 Test Your Git Knowledge</h2>
 
-			<div class="quiz-section">
-				<div class="quiz-question">
-					<h4>1. What does 'git add .' do?</h4>
-					<div class="quiz-option" onclick="selectAnswer(this, false)">A) Commits all changes</div>
-					<div class="quiz-option" onclick="selectAnswer(this, true)">B) Stages all changes in the current directory</div>
-					<div class="quiz-option" onclick="selectAnswer(this, false)">C) Creates a new repository</div>
-					<div class="quiz-option" onclick="selectAnswer(this, false)">D) Pushes changes to remote</div>
-				</div>
+			<!-- Quiz Navigation -->
+			<div class="quiz-nav">
+				<button class="quiz-nav-btn active" onclick="showQuizCategory('beginner')">🌱 Beginner</button>
+				<button class="quiz-nav-btn" onclick="showQuizCategory('intermediate')">🚀 Intermediate</button>
+				<button class="quiz-nav-btn" onclick="showQuizCategory('advanced')">🎯 Advanced</button>
+				<button class="quiz-nav-btn" onclick="showQuizCategory('scenarios')">💡 Scenarios</button>
+			</div>
 
-				<div class="quiz-question">
-					<h4>2. What's the difference between 'git pull' and 'git fetch'?</h4>
-					<div class="quiz-option" onclick="selectAnswer(this, false)">A) They do exactly the same thing</div>
-					<div class="quiz-option" onclick="selectAnswer(this, true)">B) Pull downloads and merges, fetch only downloads</div>
-					<div class="quiz-option" onclick="selectAnswer(this, false)">C) Fetch is faster than pull</div>
-					<div class="quiz-option" onclick="selectAnswer(this, false)">D) Pull works with branches, fetch doesn't</div>
-				</div>
+			<!-- Beginner Quiz -->
+			<div id="beginner" class="quiz-category active">
+				<h3>🌱 Beginner Level - Git Basics</h3>
+				<div class="quiz-section">
+					<div class="quiz-question">
+						<h4>1. What does 'git add .' do?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">A) Commits all changes</div>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">B) Stages all changes in the current directory</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) Creates a new repository</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) Pushes changes to remote</div>
+					</div>
 
-				<div class="quiz-question">
-					<h4>3. What happens when you create a new branch?</h4>
-					<div class="quiz-option" onclick="selectAnswer(this, false)">A) It deletes the current branch</div>
-					<div class="quiz-option" onclick="selectAnswer(this, true)">B) It creates a copy of the current branch's history</div>
-					<div class="quiz-option" onclick="selectAnswer(this, false)">C) It merges with the main branch</div>
-					<div class="quiz-option" onclick="selectAnswer(this, false)">D) It creates a new repository</div>
-				</div>
+					<div class="quiz-question">
+						<h4>2. What is a Git repository?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">A) A folder containing only source code</div>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">B) A directory that tracks changes to files over time</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) A remote server hosting code</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) A backup of your project</div>
+					</div>
 
-				<div class="quiz-question">
-					<h4>4. Which command safely undoes a commit that's already been shared?</h4>
-					<div class="quiz-option" onclick="selectAnswer(this, false)">A) git reset --hard HEAD~1</div>
-					<div class="quiz-option" onclick="selectAnswer(this, true)">B) git revert &lt;commit-hash&gt;</div>
-					<div class="quiz-option" onclick="selectAnswer(this, false)">C) git delete &lt;commit-hash&gt;</div>
-					<div class="quiz-option" onclick="selectAnswer(this, false)">D) git remove --commit</div>
-				</div>
+					<div class="quiz-question">
+						<h4>3. Which command creates a new Git repository?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">A) git init</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">B) git create</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) git new</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) git start</div>
+					</div>
 
-				<div class="quiz-question">
-					<h4>5. What should you do before pushing your changes?</h4>
-					<div class="quiz-option" onclick="selectAnswer(this, false)">A) Delete old branches</div>
-					<div class="quiz-option" onclick="selectAnswer(this, false)">B) Create a backup</div>
-					<div class="quiz-option" onclick="selectAnswer(this, true)">C) Pull the latest changes from remote</div>
-					<div class="quiz-option" onclick="selectAnswer(this, false)">D) Reset your local repository</div>
+					<div class="quiz-question">
+						<h4>4. What does 'git status' show?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">A) The current branch only</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">B) All commits in the repository</div>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">C) Current state of working directory and staging area</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) Remote repository information</div>
+					</div>
+
+					<div class="quiz-question">
+						<h4>5. What happens when you create a new branch?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">A) It deletes the current branch</div>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">B) It creates a copy of the current branch's history</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) It merges with the main branch</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) It creates a new repository</div>
+					</div>
+
+					<div class="quiz-question">
+						<h4>6. Which file tells Git what to ignore?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">A) .gitignore</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">B) .ignore</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) gitignore.txt</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) .exclude</div>
+					</div>
+
+					<div class="quiz-question">
+						<h4>7. What is the staging area?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">A) Where commits are stored</div>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">B) A preparation area for files before committing</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) The remote repository</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) A backup location</div>
+					</div>
 				</div>
+			</div>
+
+			<!-- Intermediate Quiz -->
+			<div id="intermediate" class="quiz-category">
+				<h3>🚀 Intermediate Level - Workflows & Operations</h3>
+				<div class="quiz-section">
+					<div class="quiz-question">
+						<h4>1. What's the difference between 'git pull' and 'git fetch'?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">A) They do exactly the same thing</div>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">B) Pull downloads and merges, fetch only downloads</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) Fetch is faster than pull</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) Pull works with branches, fetch doesn't</div>
+					</div>
+
+					<div class="quiz-question">
+						<h4>2. Which command safely undoes a commit that's already been shared?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">A) git reset --hard HEAD~1</div>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">B) git revert &lt;commit-hash&gt;</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) git delete &lt;commit-hash&gt;</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) git remove --commit</div>
+					</div>
+
+					<div class="quiz-question">
+						<h4>3. What should you do before pushing your changes?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">A) Delete old branches</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">B) Create a backup</div>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">C) Pull the latest changes from remote</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) Reset your local repository</div>
+					</div>
+
+					<div class="quiz-question">
+						<h4>4. What does 'git merge' do?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">A) Combines changes from two branches</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">B) Creates a new branch</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) Deletes a branch</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) Pushes changes to remote</div>
+					</div>
+
+					<div class="quiz-question">
+						<h4>5. When do merge conflicts occur?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">A) When you create a new branch</div>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">B) When Git can't automatically merge changes to the same lines</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) When you commit changes</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) When you switch branches</div>
+					</div>
+
+					<div class="quiz-question">
+						<h4>6. What does 'git checkout -b feature' do?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">A) Switches to existing branch 'feature'</div>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">B) Creates and switches to new branch 'feature'</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) Deletes branch 'feature'</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) Merges branch 'feature'</div>
+					</div>
+
+					<div class="quiz-question">
+						<h4>7. What is the difference between 'git reset --soft' and 'git reset --hard'?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">A) --soft keeps changes staged, --hard discards all changes</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">B) --soft is faster than --hard</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) They do the same thing</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) --soft works on remote, --hard works locally</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Advanced Quiz -->
+			<div id="advanced" class="quiz-category">
+				<h3>🎯 Advanced Level - Expert Operations</h3>
+				<div class="quiz-section">
+					<div class="quiz-question">
+						<h4>1. What does 'git rebase -i HEAD~3' do?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">A) Merges the last 3 commits</div>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">B) Opens interactive mode to edit the last 3 commits</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) Deletes the last 3 commits</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) Creates 3 new branches</div>
+					</div>
+
+					<div class="quiz-question">
+						<h4>2. What is the purpose of 'git stash'?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">A) To permanently delete changes</div>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">B) To temporarily save changes without committing</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) To create a new branch</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) To push changes to remote</div>
+					</div>
+
+					<div class="quiz-question">
+						<h4>3. What does 'git cherry-pick' do?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">A) Applies a specific commit from another branch</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">B) Selects the best commits automatically</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) Removes unwanted commits</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) Merges all branches</div>
+					</div>
+
+					<div class="quiz-question">
+						<h4>4. When should you use 'git rebase' instead of 'git merge'?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">A) Never, merge is always better</div>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">B) When you want a linear commit history</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) Only on public branches</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) When working with remote repositories</div>
+					</div>
+
+					<div class="quiz-question">
+						<h4>5. What does 'git bisect' help you find?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">A) Missing files</div>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">B) The commit that introduced a bug</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) Merge conflicts</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) Unused branches</div>
+					</div>
+
+					<div class="quiz-question">
+						<h4>6. What is a 'detached HEAD' state?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">A) When Git is corrupted</div>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">B) When HEAD points to a commit instead of a branch</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) When you're not connected to internet</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) When there are no commits</div>
+					</div>
+
+					<div class="quiz-question">
+						<h4>7. What does 'git reflog' show?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">A) Remote repository logs</div>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">B) A log of all recent actions in your local repository</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) Only merge commit logs</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) Branch creation logs</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Scenario Quiz -->
+			<div id="scenarios" class="quiz-category">
+				<h3>💡 Real-World Scenarios</h3>
+				<div class="quiz-section">
+					<div class="quiz-question">
+						<h4>1. You accidentally committed sensitive data (API keys). What's the best approach?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">A) Just add .gitignore and commit again</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">B) Delete the repository and start over</div>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">C) Use git filter-branch or BFG Repo-Cleaner to rewrite history</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) Ignore it, it's already committed</div>
+					</div>
+
+					<div class="quiz-question">
+						<h4>2. Your teammate pushed code while you were working. How do you integrate their changes?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">A) Force push your changes</div>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">B) Pull their changes first, resolve conflicts, then push</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) Create a new repository</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) Work on a different project</div>
+					</div>
+
+					<div class="quiz-question">
+						<h4>3. You need to work on a hotfix while having unfinished feature work. What should you do?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">A) Commit the unfinished work</div>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">B) Stash your changes, switch to hotfix branch, then stash pop later</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) Delete all unfinished work</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) Work on hotfix in the same branch</div>
+					</div>
+
+					<div class="quiz-question">
+						<h4>4. You want to keep your feature branch up to date with main without merge commits. What do you use?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">A) git merge main</div>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">B) git rebase main</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) git cherry-pick main</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) git reset --hard main</div>
+					</div>
+
+					<div class="quiz-question">
+						<h4>5. A file is showing up in git status but should be ignored. The file is already in .gitignore. Why?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">A) .gitignore is corrupted</div>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">B) The file was tracked before being added to .gitignore</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) Git is not working properly</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) .gitignore syntax is wrong</div>
+					</div>
+
+					<div class="quiz-question">
+						<h4>6. Your last 3 commits have messy commit messages. How do you clean them up?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">A) Delete and recreate commits</div>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">B) Use git rebase -i HEAD~3 to reword/squash</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) Create new commits with better messages</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) Leave them as is</div>
+					</div>
+
+					<div class="quiz-question">
+						<h4>7. You need to see exactly who changed a specific line in a file and when. Which command helps?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">A) git log</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">B) git diff</div>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">C) git blame</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) git status</div>
+					</div>
+
+					<div class="quiz-question">
+						<h4>8. Your repository has become very slow. What might help?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">A) Delete all branches</div>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">B) Run git gc to garbage collect</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) Reinstall Git</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) Create a new repository</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="quiz-results" id="quizResults">
+				<h3>📊 Quiz Results</h3>
+				<button class="btn" onclick="calculateScore()">Calculate My Score</button>
+				<div id="scoreDisplay"></div>
 			</div>
 
 			<div class="tip">
@@ -736,17 +1065,51 @@
 			event.target.classList.add('active');
 		}
 
+		// Quiz state tracking
+		let quizScores = {
+			beginner: { correct: 0, total: 0, answered: new Set() },
+			intermediate: { correct: 0, total: 0, answered: new Set() },
+			advanced: { correct: 0, total: 0, answered: new Set() },
+			scenarios: { correct: 0, total: 0, answered: new Set() }
+		};
+
+		function showQuizCategory(categoryId) {
+			// Hide all quiz categories
+			const categories = document.querySelectorAll('.quiz-category');
+			categories.forEach(category => category.classList.remove('active'));
+
+			// Remove active class from all nav buttons
+			const navBtns = document.querySelectorAll('.quiz-nav-btn');
+			navBtns.forEach(btn => btn.classList.remove('active'));
+
+			// Show selected category
+			document.getElementById(categoryId).classList.add('active');
+
+			// Add active class to clicked button
+			event.target.classList.add('active');
+		}
+
 		function selectAnswer(element, isCorrect) {
-			// Remove previous selections in this question
+			// Get question info
 			const question = element.parentElement;
+			const questionNumber = question.querySelector('h4').textContent.split('.')[0];
+			const category = question.closest('.quiz-category').id;
+			const questionId = `${category}-${questionNumber}`;
+
+			// Remove previous selections in this question
 			const options = question.querySelectorAll('.quiz-option');
 			options.forEach(option => {
 				option.classList.remove('correct', 'incorrect');
+				option.style.pointerEvents = 'auto';
 			});
 
 			// Mark the selected answer
 			if (isCorrect) {
 				element.classList.add('correct');
+				// Update score if not already answered
+				if (!quizScores[category].answered.has(questionId)) {
+					quizScores[category].correct++;
+				}
 			} else {
 				element.classList.add('incorrect');
 				// Also show the correct answer
@@ -756,7 +1119,192 @@
 					}
 				});
 			}
+
+			// Mark as answered and increment total
+			if (!quizScores[category].answered.has(questionId)) {
+				quizScores[category].answered.add(questionId);
+				quizScores[category].total++;
+			}
+
+			// Disable further clicks on this question
+			options.forEach(option => {
+				option.style.pointerEvents = 'none';
+			});
+
+			// Show immediate feedback
+			setTimeout(() => {
+				if (isCorrect) {
+					showFeedback(question, '✅ Correct! Great job!', 'success');
+				} else {
+					showFeedback(question, '❌ Not quite right. The correct answer is highlighted.', 'error');
+				}
+			}, 500);
 		}
+
+		function showFeedback(questionElement, message, type) {
+			// Remove any existing feedback
+			const existingFeedback = questionElement.querySelector('.feedback');
+			if (existingFeedback) {
+				existingFeedback.remove();
+			}
+
+			// Create new feedback element
+			const feedback = document.createElement('div');
+			feedback.className = `feedback ${type}`;
+			feedback.style.cssText = `
+				margin-top: 10px;
+				padding: 10px 15px;
+				border-radius: 5px;
+				font-weight: 500;
+				background: ${type === 'success' ? '#48bb78' : '#f56565'};
+				color: white;
+				animation: slideIn 0.3s ease;
+			`;
+			feedback.textContent = message;
+			questionElement.appendChild(feedback);
+
+			// Remove feedback after 3 seconds
+			setTimeout(() => {
+				if (feedback.parentNode) {
+					feedback.remove();
+				}
+			}, 3000);
+		}
+
+		function calculateScore() {
+			let totalCorrect = 0;
+			let totalAnswered = 0;
+			let categoryScores = [];
+
+			// Calculate scores for each category
+			Object.keys(quizScores).forEach(category => {
+				const score = quizScores[category];
+				if (score.total > 0) {
+					const percentage = Math.round((score.correct / score.total) * 100);
+					categoryScores.push({
+						name: category.charAt(0).toUpperCase() + category.slice(1),
+						correct: score.correct,
+						total: score.total,
+						percentage: percentage
+					});
+					totalCorrect += score.correct;
+					totalAnswered += score.total;
+				}
+			});
+
+			if (totalAnswered === 0) {
+				document.getElementById('scoreDisplay').innerHTML =
+					'<p style="color: #666; font-style: italic;">Answer some questions first to see your score!</p>';
+				return;
+			}
+
+			const overallPercentage = Math.round((totalCorrect / totalAnswered) * 100);
+
+			// Generate score display
+			let scoreHTML = `
+				<div class="score-summary">
+					<h4>Overall Score: ${totalCorrect}/${totalAnswered} (${overallPercentage}%)</h4>
+				</div>
+			`;
+
+			// Add category breakdown
+			if (categoryScores.length > 1) {
+				scoreHTML += '<div class="category-scores"><h5>Category Breakdown:</h5>';
+				categoryScores.forEach(cat => {
+					const difficultyClass = getDifficultyClass(cat.name.toLowerCase());
+					scoreHTML += `
+						<div class="category-score">
+							<span class="difficulty-indicator ${difficultyClass}">
+								${getEmoji(cat.name)} ${cat.name}
+							</span>
+							${cat.correct}/${cat.total} (${cat.percentage}%)
+						</div>
+					`;
+				});
+				scoreHTML += '</div>';
+			}
+
+			// Add performance feedback
+			let performanceClass, performanceMessage;
+			if (overallPercentage >= 85) {
+				performanceClass = 'score-excellent';
+				performanceMessage = '🎉 Excellent! You have a strong understanding of Git concepts!';
+			} else if (overallPercentage >= 70) {
+				performanceClass = 'score-good';
+				performanceMessage = '👍 Good job! You understand most Git concepts well.';
+			} else {
+				performanceClass = 'score-needs-improvement';
+				performanceMessage = '📚 Keep studying! Review the concepts and try again.';
+			}
+
+			scoreHTML += `<div class="${performanceClass}">${performanceMessage}</div>`;
+
+			// Add recommendations
+			if (overallPercentage < 85) {
+				scoreHTML += `
+					<div class="recommendations">
+						<h5>💡 Recommendations:</h5>
+						<ul>
+							<li>Review the sections where you scored lower</li>
+							<li>Practice with a test repository</li>
+							<li>Try the commands in a safe environment</li>
+							<li>Read Git documentation for advanced topics</li>
+						</ul>
+					</div>
+				`;
+			}
+
+			document.getElementById('scoreDisplay').innerHTML = scoreHTML;
+		}
+
+		function getDifficultyClass(category) {
+			const map = {
+				'beginner': 'difficulty-beginner',
+				'intermediate': 'difficulty-intermediate',
+				'advanced': 'difficulty-advanced',
+				'scenarios': 'difficulty-scenarios'
+			};
+			return map[category] || 'difficulty-beginner';
+		}
+
+		function getEmoji(category) {
+			const map = {
+				'Beginner': '🌱',
+				'Intermediate': '🚀',
+				'Advanced': '🎯',
+				'Scenarios': '💡'
+			};
+			return map[category] || '📚';
+		}
+
+		// Add CSS animation for feedback
+		const style = document.createElement('style');
+		style.textContent = `
+			@keyframes slideIn {
+				from { opacity: 0; transform: translateY(-10px); }
+				to { opacity: 1; transform: translateY(0); }
+			}
+			.category-score {
+				margin: 8px 0;
+				padding: 8px;
+				background: #f8f9fa;
+				border-radius: 5px;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+			}
+			.recommendations ul {
+				text-align: left;
+				margin-left: 20px;
+				margin-top: 10px;
+			}
+			.score-summary {
+				font-size: 1.2em;
+				margin-bottom: 20px;
+				color: #2d3748;
+			}
+		`;
+		document.head.appendChild(style);
 
 		// Add some interactive features
 		document.addEventListener('DOMContentLoaded', function() {
