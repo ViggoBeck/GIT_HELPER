@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Local Git Explorer</title>
+	<title>Git Education Center</title>
 	<style>
 		* {
 			margin: 0;
@@ -19,7 +19,7 @@
 		}
 
 		.container {
-			max-width: 1200px;
+			max-width: 1400px;
 			margin: 0 auto;
 			background: white;
 			border-radius: 15px;
@@ -32,7 +32,6 @@
 			color: white;
 			padding: 30px;
 			text-align: center;
-			position: relative;
 		}
 
 		.header h1 {
@@ -40,417 +39,1481 @@
 			margin-bottom: 10px;
 		}
 
-		.header p {
-			opacity: 0.9;
-			font-size: 1.1em;
+		.nav-bar {
+			background: #34495e;
+			padding: 15px 30px;
+			display: flex;
+			gap: 20px;
+			flex-wrap: wrap;
+			justify-content: center;
 		}
 
-		.education-btn {
-			position: absolute;
-			top: 20px;
-			right: 30px;
-			background: linear-gradient(45deg, #e74c3c, #c0392b);
+		.nav-btn {
+			background: rgba(255,255,255,0.1);
+			color: white;
+			border: none;
+			padding: 10px 20px;
+			border-radius: 25px;
+			cursor: pointer;
+			transition: all 0.3s ease;
+			font-size: 14px;
+		}
+
+		.nav-btn:hover, .nav-btn.active {
+			background: #3498db;
+			transform: translateY(-2px);
+		}
+
+		.back-btn {
+			background: #27ae60;
 			color: white;
 			text-decoration: none;
-			padding: 12px 25px;
+			padding: 10px 20px;
 			border-radius: 25px;
-			font-weight: bold;
 			transition: all 0.3s ease;
-			box-shadow: 0 4px 15px rgba(231,76,60,0.3);
 		}
 
-		.education-btn:hover {
+		.back-btn:hover {
+			background: #2ecc71;
 			transform: translateY(-2px);
-			box-shadow: 0 6px 20px rgba(231,76,60,0.4);
 		}
 
 		.content {
 			padding: 30px;
+			display: none;
 		}
 
-		.grid {
+		.content.active {
+			display: block;
+		}
+
+		.concept-grid {
 			display: grid;
-			grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-			gap: 20px;
+			grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+			gap: 25px;
 			margin-bottom: 30px;
 		}
 
-		.card {
+		.concept-card {
 			background: #f8f9fa;
 			border: 2px solid #e9ecef;
-			border-radius: 10px;
-			padding: 20px;
+			border-radius: 15px;
+			padding: 25px;
 			transition: all 0.3s ease;
 		}
 
-		.card:hover {
+		.concept-card:hover {
 			border-color: #007bff;
-			transform: translateY(-2px);
-			box-shadow: 0 5px 15px rgba(0,123,255,0.2);
+			transform: translateY(-3px);
+			box-shadow: 0 8px 25px rgba(0,123,255,0.15);
 		}
 
-		.card h3 {
+		.concept-card h3 {
 			color: #2c3e50;
 			margin-bottom: 15px;
-			font-size: 1.3em;
+			font-size: 1.4em;
+			display: flex;
+			align-items: center;
+			gap: 10px;
 		}
 
-		.btn {
-			background: linear-gradient(45deg, #007bff, #0056b3);
-			color: white;
-			border: none;
-			padding: 10px 20px;
-			border-radius: 5px;
-			cursor: pointer;
-			font-size: 14px;
-			transition: all 0.3s ease;
-			margin: 5px;
+		.concept-icon {
+			font-size: 1.5em;
 		}
 
-		.btn:hover {
-			transform: translateY(-1px);
-			box-shadow: 0 3px 10px rgba(0,123,255,0.3);
-		}
-
-		.btn-success {
-			background: linear-gradient(45deg, #28a745, #20c997);
-		}
-
-		.btn-warning {
-			background: linear-gradient(45deg, #ffc107, #fd7e14);
-		}
-
-		.btn-danger {
-			background: linear-gradient(45deg, #dc3545, #e83e8c);
-		}
-
-		.output {
+		.command-example {
 			background: #2d3748;
 			color: #e2e8f0;
 			padding: 15px;
 			border-radius: 8px;
 			font-family: 'Courier New', monospace;
-			font-size: 13px;
-			white-space: pre-wrap;
-			max-height: 300px;
-			overflow-y: auto;
-			margin-top: 15px;
-			border: 1px solid #4a5568;
+			margin: 15px 0;
+			border-left: 4px solid #4299e1;
 		}
 
-		.success {
-			border-left: 4px solid #28a745;
-			background-color: #d4edda;
+		.command-example .command {
+			color: #68d391;
+			font-weight: bold;
 		}
 
-		.error {
-			border-left: 4px solid #dc3545;
-			background-color: #f8d7da;
-			color: #721c24;
+		.command-example .comment {
+			color: #a0aec0;
+			font-style: italic;
 		}
 
-		.input-group {
-			margin-bottom: 15px;
+		.visual-diagram {
+			background: #f7fafc;
+			border: 2px dashed #cbd5e0;
+			border-radius: 10px;
+			padding: 20px;
+			margin: 20px 0;
+			text-align: center;
+			font-family: monospace;
 		}
 
-		.input-group label {
-			display: block;
-			margin-bottom: 5px;
-			font-weight: 500;
-			color: #2c3e50;
+		.git-flow {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 15px;
+			flex-wrap: wrap;
+			margin: 20px 0;
 		}
 
-		.input-group input, .input-group textarea {
-			width: 100%;
-			padding: 10px;
-			border: 2px solid #e9ecef;
-			border-radius: 5px;
-			font-size: 14px;
-			transition: border-color 0.3s ease;
+		.git-stage {
+			background: linear-gradient(135deg, #667eea, #764ba2);
+			color: white;
+			padding: 15px 20px;
+			border-radius: 10px;
+			font-weight: bold;
+			min-width: 120px;
+			text-align: center;
 		}
 
-		.input-group input:focus, .input-group textarea:focus {
-			outline: none;
-			border-color: #007bff;
-			box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+		.arrow {
+			font-size: 1.5em;
+			color: #666;
 		}
 
-		.status-indicator {
-			display: inline-block;
-			width: 12px;
-			height: 12px;
-			border-radius: 50%;
-			margin-right: 8px;
-		}
-
-		.status-clean { background-color: #28a745; }
-		.status-dirty { background-color: #ffc107; }
-		.status-error { background-color: #dc3545; }
-
-		.repo-info {
-			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		.best-practice {
+			background: linear-gradient(135deg, #48bb78, #38a169);
 			color: white;
 			padding: 20px;
 			border-radius: 10px;
-			margin-bottom: 20px;
+			margin: 15px 0;
 		}
 
-		.loading {
+		.warning {
+			background: linear-gradient(135deg, #ed8936, #dd6b20);
+			color: white;
+			padding: 20px;
+			border-radius: 10px;
+			margin: 15px 0;
+		}
+
+		.tip {
+			background: linear-gradient(135deg, #4299e1, #3182ce);
+			color: white;
+			padding: 20px;
+			border-radius: 10px;
+			margin: 15px 0;
+		}
+
+		.command-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+			gap: 20px;
+			margin: 25px 0;
+		}
+
+		.command-card {
+			background: white;
+			border: 1px solid #e2e8f0;
+			border-radius: 10px;
+			padding: 20px;
+			box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+		}
+
+		.command-card h4 {
+			color: #2d3748;
+			margin-bottom: 10px;
+			font-size: 1.1em;
+		}
+
+		.workflow-step {
+			background: white;
+			border-left: 4px solid #4299e1;
+			padding: 20px;
+			margin: 15px 0;
+			border-radius: 0 10px 10px 0;
+			box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+		}
+
+		.workflow-step h4 {
+			color: #2d3748;
+			margin-bottom: 10px;
+		}
+
+		.quiz-section {
+			background: #f7fafc;
+			padding: 25px;
+			border-radius: 15px;
+			margin: 25px 0;
+		}
+
+		.quiz-question {
+			background: white;
+			padding: 20px;
+			border-radius: 10px;
+			margin: 15px 0;
+			box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+		}
+
+		.quiz-option {
+			background: #e2e8f0;
+			padding: 10px 15px;
+			margin: 8px 0;
+			border-radius: 5px;
+			cursor: pointer;
+			transition: all 0.3s ease;
+		}
+
+		.quiz-option:hover {
+			background: #cbd5e0;
+		}
+
+		.quiz-option.correct {
+			background: #48bb78;
+			color: white;
+		}
+
+		.quiz-option.incorrect {
+			background: #f56565;
+			color: white;
+		}
+
+		.quiz-nav {
+			display: flex;
+			gap: 15px;
+			margin-bottom: 30px;
+			flex-wrap: wrap;
+			justify-content: center;
+		}
+
+		.quiz-nav-btn {
+			background: #e2e8f0;
+			color: #2d3748;
+			border: none;
+			padding: 12px 25px;
+			border-radius: 25px;
+			cursor: pointer;
+			font-size: 14px;
+			font-weight: 500;
+			transition: all 0.3s ease;
+		}
+
+		.quiz-nav-btn:hover {
+			background: #cbd5e0;
+			transform: translateY(-1px);
+		}
+
+		.quiz-nav-btn.active {
+			background: linear-gradient(45deg, #4299e1, #3182ce);
+			color: white;
+			transform: translateY(-2px);
+			box-shadow: 0 4px 15px rgba(66,153,225,0.3);
+		}
+
+		.quiz-category {
+			display: none;
+		}
+
+		.quiz-category.active {
+			display: block;
+		}
+
+		.quiz-results {
+			background: #f7fafc;
+			padding: 25px;
+			border-radius: 15px;
+			margin: 25px 0;
+			text-align: center;
+		}
+
+		.score-excellent {
+			background: linear-gradient(135deg, #48bb78, #38a169);
+			color: white;
+			padding: 20px;
+			border-radius: 10px;
+			margin: 15px 0;
+		}
+
+		.score-good {
+			background: linear-gradient(135deg, #4299e1, #3182ce);
+			color: white;
+			padding: 20px;
+			border-radius: 10px;
+			margin: 15px 0;
+		}
+
+		.score-needs-improvement {
+			background: linear-gradient(135deg, #ed8936, #dd6b20);
+			color: white;
+			padding: 20px;
+			border-radius: 10px;
+			margin: 15px 0;
+		}
+
+		.difficulty-indicator {
 			display: inline-block;
-			width: 20px;
-			height: 20px;
-			border: 2px solid #f3f3f3;
-			border-top: 2px solid #007bff;
-			border-radius: 50%;
-			animation: spin 1s linear infinite;
+			padding: 5px 12px;
+			border-radius: 15px;
+			font-size: 12px;
+			font-weight: bold;
+			margin-left: 10px;
 		}
 
-		@keyframes spin {
-			0% { transform: rotate(0deg); }
-			100% { transform: rotate(360deg); }
+		.difficulty-beginner {
+			background: #c6f6d5;
+			color: #22543d;
+		}
+
+		.difficulty-intermediate {
+			background: #bee3f8;
+			color: #1a365d;
+		}
+
+		.difficulty-advanced {
+			background: #fed7d7;
+			color: #742a2a;
+		}
+
+		.difficulty-scenarios {
+			background: #e9d8fd;
+			color: #44337a;
+		}
+
+		@media (max-width: 768px) {
+			.concept-grid, .command-grid {
+				grid-template-columns: 1fr;
+			}
+
+			.git-flow {
+				flex-direction: column;
+			}
+
+			.arrow {
+				transform: rotate(90deg);
+			}
 		}
 	</style>
 </head>
 <body>
 	<div class="container">
 		<div class="header">
-			<a href="education.html" class="education-btn">🎓 Learn Git</a>
-			<h1>🔄 Local Git Explorer</h1>
-			<p>Explore and interact with your local Git repository</p>
+			<h1>🎓 Git Education Center</h1>
+			<p>Master Git with interactive lessons and examples</p>
 		</div>
 
-		<div class="content">
-			<div class="repo-info" id="repoInfo">
-				<h3>📂 Repository Information</h3>
-				<div id="repoDetails">Loading...</div>
+		<div class="nav-bar">
+			<button class="nav-btn active" onclick="showSection('setup')">🚀 Git Setup</button>
+			<button class="nav-btn" onclick="showSection('basics')">🏗️ Git Basics</button>
+			<button class="nav-btn" onclick="showSection('commands')">⚡ Commands</button>
+			<button class="nav-btn" onclick="showSection('workflows')">🔄 Workflows</button>
+			<button class="nav-btn" onclick="showSection('bestpractices')">✨ Best Practices</button>
+			<button class="nav-btn" onclick="showSection('troubleshooting')">🔧 Troubleshooting</button>
+			<button class="nav-btn" onclick="showSection('quiz')">🎯 Quiz</button>
+
+		</div>
+
+		<!-- Git Setup Section -->
+		<div id="setup" class="content active">
+			<h2>🚀 Git Setup Guide - For Complete Beginners</h2>
+
+			<div class="best-practice">
+				<h4>👋 New to Git? Start Here!</h4>
+				<p>This guide will walk you through installing and setting up Git on your computer step-by-step. No prior experience needed!</p>
 			</div>
 
-			<div class="grid">
-				<!-- Repository Status -->
-				<div class="card">
-					<h3>📊 Repository Status</h3>
-					<button class="btn" onclick="getGitStatus()">Check Status</button>
-					<button class="btn btn-warning" onclick="getGitDiff()">Show Changes</button>
-					<div class="output" id="statusOutput"></div>
+			<div class="workflow-step">
+				<h4>📋 What You'll Learn:</h4>
+				<ul style="margin-left: 20px; margin-top: 10px;">
+					<li>How to download and install Git</li>
+					<li>Essential first-time configuration</li>
+					<li>How to verify your installation works</li>
+					<li>Setting up your first repository</li>
+				</ul>
+			</div>
+
+			<div class="concept-grid">
+				<div class="concept-card">
+					<h3><span class="concept-icon">💻</span> Windows Installation</h3>
+					<p><strong>Step 1: Download Git</strong></p>
+					<ul style="margin-left: 15px; margin-top: 10px;">
+						<li>Go to <strong>git-scm.com</strong></li>
+						<li>Click "Download for Windows"</li>
+						<li>Run the downloaded .exe file</li>
+					</ul>
+					<p><strong>Step 2: Installation Options</strong></p>
+					<ul style="margin-left: 15px; margin-top: 5px;">
+						<li>✅ Use default settings (recommended for beginners)</li>
+						<li>✅ Select "Git Bash Here" option</li>
+						<li>✅ Choose "Use Git from Git Bash only" (safer)</li>
+					</ul>
 				</div>
 
-				<!-- Commit History -->
-				<div class="card">
-					<h3>📜 Commit History</h3>
-					<button class="btn" onclick="getGitLog()">Show Recent Commits</button>
-					<div class="output" id="logOutput"></div>
-				</div>
-
-				<!-- Branch Management -->
-				<div class="card">
-					<h3>🌿 Branch Management</h3>
-					<button class="btn" onclick="getGitBranches()">List Branches</button>
-					<div class="input-group">
-						<label>Create New Branch:</label>
-						<input type="text" id="newBranchName" placeholder="feature/new-feature">
-						<button class="btn btn-success" onclick="createBranch()">Create Branch</button>
+				<div class="concept-card">
+					<h3><span class="concept-icon">🍎</span> macOS Installation</h3>
+					<p><strong>Option 1: Using Homebrew (Recommended)</strong></p>
+					<div class="command-example">
+						<span class="comment"># Install Homebrew first if you don't have it:</span><br>
+						/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"<br><br>
+						<span class="comment"># Then install Git:</span><br>
+						<span class="command">brew install git</span>
 					</div>
-					<div class="input-group">
-						<label>Switch Branch:</label>
-						<input type="text" id="switchBranchName" placeholder="main">
-						<button class="btn btn-warning" onclick="switchBranch()">Switch</button>
-					</div>
-					<div class="output" id="branchOutput"></div>
+					<p><strong>Option 2: Download from git-scm.com</strong></p>
+					<ul style="margin-left: 15px;">
+						<li>Go to git-scm.com</li>
+						<li>Click "Download for Mac"</li>
+						<li>Run the installer package</li>
+					</ul>
 				</div>
 
-				<!-- Remote Information -->
-				<div class="card">
-					<h3>🌐 Remote Repositories</h3>
-					<button class="btn" onclick="getGitRemotes()">Show Remotes</button>
-					<div class="output" id="remoteOutput"></div>
+				<div class="concept-card">
+					<h3><span class="concept-icon">🐧</span> Linux Installation</h3>
+					<p><strong>Ubuntu/Debian:</strong></p>
+					<div class="command-example">
+						<span class="command">sudo apt update</span><br>
+						<span class="command">sudo apt install git</span>
+					</div>
+					<p><strong>CentOS/RHEL/Fedora:</strong></p>
+					<div class="command-example">
+						<span class="command">sudo yum install git</span><br>
+						<span class="comment"># Or on newer systems:</span><br>
+						<span class="command">sudo dnf install git</span>
+					</div>
 				</div>
 
-				<!-- Commit Changes -->
-				<div class="card">
-					<h3>💾 Commit Changes</h3>
-					<div class="input-group">
-						<label>Files to add (space-separated):</label>
-						<input type="text" id="filesToAdd" placeholder=". (for all files)">
+				<div class="concept-card">
+					<h3><span class="concept-icon">✅</span> Verify Installation</h3>
+					<p>Check if Git is installed correctly:</p>
+					<div class="command-example">
+						<span class="command">git --version</span><br>
+						<span class="comment"># Should show something like: git version 2.40.1</span>
 					</div>
-					<div class="input-group">
-						<label>Commit Message:</label>
-						<textarea id="commitMessage" rows="3" placeholder="Enter your commit message here..."></textarea>
+					<div class="tip">
+						<strong>💡 Tip:</strong> If you get an error, try restarting your terminal or computer, then try again.
 					</div>
-					<button class="btn btn-success" onclick="commitChanges()">Commit</button>
-					<div class="output" id="commitOutput"></div>
+				</div>
+			</div>
+
+			<div class="warning">
+				<h4>🚨 CRITICAL: You MUST Configure Git Before First Use!</h4>
+				<p><strong>Git will NOT work properly until you set up your identity.</strong> Every commit you make is tagged with your name and email, so Git needs to know who you are.</p>
+			</div>
+
+			<div class="workflow-step">
+				<h4>🛠️ Essential Git Configuration (REQUIRED)</h4>
+				<p><strong>These commands are mandatory - run them now:</strong></p>
+				<div class="command-example">
+					<span class="comment"># Replace "Your Full Name" with your actual name:</span><br>
+					<span class="command">git config --global user.name "John Smith"</span><br><br>
+
+					<span class="comment"># Replace with your actual email address:</span><br>
+					<span class="command">git config --global user.email "john.smith@example.com"</span><br><br>
+
+					<span class="comment"># Set default branch name to 'main' (modern standard):</span><br>
+					<span class="command">git config --global init.defaultBranch main</span><br><br>
+
+					<span class="comment"># Verify your settings are correct:</span><br>
+					<span class="command">git config --list --global</span>
+				</div>
+			</div>
+
+			<div class="best-practice">
+				<h4>⚠️ What Happens If You Skip Git Config?</h4>
+				<ul style="margin-left: 20px; margin-top: 10px;">
+					<li><strong>❌ Git commits will fail</strong> - You'll get errors when trying to commit</li>
+					<li><strong>❌ Wrong author information</strong> - Your commits might show as "unknown" author</li>
+					<li><strong>❌ Team confusion</strong> - Colleagues won't know who made changes</li>
+					<li><strong>❌ Repository issues</strong> - Some Git hosting services require proper author info</li>
+				</ul>
+				<p><strong>✅ Bottom line: Configure Git first, always!</strong></p>
+			</div>
+
+			<div class="concept-grid">
+				<div class="concept-card">
+					<h3><span class="concept-icon">🎯</span> Your First Repository</h3>
+					<p>Let's create your first Git repository to test everything works:</p>
+					<div class="command-example">
+						<span class="comment"># 1. Create a new folder:</span><br>
+						<span class="command">mkdir my-first-repo</span><br>
+						<span class="command">cd my-first-repo</span><br><br>
+
+						<span class="comment"># 2. Initialize Git repository:</span><br>
+						<span class="command">git init</span><br><br>
+
+						<span class="comment"># 3. Create a file:</span><br>
+						<span class="command">echo "Hello Git!" > README.txt</span><br><br>
+
+						<span class="comment"># 4. Add and commit the file:</span><br>
+						<span class="command">git add README.txt</span><br>
+						<span class="command">git commit -m "My first commit!"</span>
+					</div>
 				</div>
 
-				<!-- Git Configuration -->
-				<div class="card">
-					<h3>⚙️ Git Configuration</h3>
-					<button class="btn" onclick="getGitConfig()">Show Config</button>
-					<div class="output" id="configOutput"></div>
+				<div class="concept-card">
+					<h3><span class="concept-icon">🎉</span> Success!</h3>
+					<p>If the commands above worked without errors, congratulations! You have:</p>
+					<ul style="margin-left: 15px; margin-top: 10px;">
+						<li>✅ Git successfully installed</li>
+						<li>✅ Your identity configured</li>
+						<li>✅ Created your first repository</li>
+						<li>✅ Made your first commit</li>
+					</ul>
+					<div class="best-practice">
+						<strong>🚀 Ready for the next step?</strong><br>
+						Now click on "🏗️ Git Basics" to learn fundamental concepts!
+					</div>
 				</div>
+			</div>
+
+			<div class="warning">
+				<h4>🆘 Common Setup Problems</h4>
+				<ul style="margin-left: 20px; margin-top: 10px;">
+					<li><strong>"git: command not found":</strong> Git isn't in your PATH. Try restarting terminal or reinstalling.</li>
+					<li><strong>Permission errors on Linux/Mac:</strong> Don't use sudo with git config. Only use sudo for installation.</li>
+					<li><strong>Windows: "Git Bash not found":</strong> During installation, make sure to check "Git Bash Here" option.</li>
+					<li><strong>"Please tell me who you are" error:</strong> You forgot to run git config commands above!</li>
+					<li><strong>Can't remember your settings:</strong> Use <code>git config --global --list</code> to see current config.</li>
+				</ul>
+			</div>
+
+			<div class="concept-card">
+				<h3><span class="concept-icon">⚠️</span> What The Error Looks Like</h3>
+				<p>If you try to commit without configuring Git, you'll see this error:</p>
+				<div class="command-example" style="background: #d32f2f; color: white;">
+					*** Please tell me who you are.<br><br>
+					Run<br><br>
+					&nbsp;&nbsp;git config --global user.email "you@example.com"<br>
+					&nbsp;&nbsp;git config --global user.name "Your Name"<br><br>
+					to set your account's default identity.<br>
+					Omit --global to set the identity only in this repository.
+				</div>
+				<p><strong>Don't worry!</strong> Just run the git config commands above and try again.</p>
+			</div>
+
+			<div class="tip">
+				<strong>💡 Next Steps After Installation:</strong><br>
+				1. <strong>Learn the basics</strong> - Click "🏗️ Git Basics" to understand core concepts<br>
+				2. <strong>Practice commands</strong> - Try the "⚡ Commands" section<br>
+				3. <strong>Follow workflows</strong> - Learn real development practices<br>
+				4. <strong>Take the quiz</strong> - Test your knowledge!
+			</div>
+		</div>
+
+		<!-- Git Basics Section -->
+		<div id="basics" class="content">
+			<h2>🏗️ Git Fundamentals</h2>
+
+			<div class="concept-grid">
+				<div class="concept-card">
+					<h3><span class="concept-icon">📁</span> Repository (Repo)</h3>
+					<p>A repository is like a project folder that tracks all changes to your files over time. It contains your code, history, and configuration.</p>
+					<div class="visual-diagram">
+						<strong>Repository Structure:</strong><br>
+						📁 my-project/<br>
+						├── 📁 .git/ (Git's database)<br>
+						├── 📄 file1.js<br>
+						├── 📄 file2.css<br>
+						└── 📄 README.md
+					</div>
+				</div>
+
+				<div class="concept-card">
+					<h3><span class="concept-icon">📸</span> Commit</h3>
+					<p>A commit is like taking a snapshot of your project at a specific point in time. Each commit has a unique ID and message describing what changed.</p>
+					<div class="command-example">
+						<span class="command">git commit -m "Add user authentication feature"</span><br>
+						<span class="comment"># Creates a snapshot with a descriptive message</span>
+					</div>
+				</div>
+
+				<div class="concept-card">
+					<h3><span class="concept-icon">🌿</span> Branch</h3>
+					<p>Branches let you work on different features simultaneously. Think of them as parallel timelines of your project.</p>
+					<div class="visual-diagram">
+						<strong>Branch Visualization:</strong><br>
+						main: ●─●─●─●<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;╲<br>
+						feature: &nbsp;&nbsp;&nbsp;&nbsp;●─●─●
+					</div>
+				</div>
+
+				<div class="concept-card">
+					<h3><span class="concept-icon">🔄</span> Working Directory</h3>
+					<p>The files you see and edit. These are the actual files on your computer that you're currently working with.</p>
+				</div>
+
+				<div class="concept-card">
+					<h3><span class="concept-icon">📦</span> Staging Area</h3>
+					<p>A temporary space where you prepare files before committing them. Like a shopping cart before checkout.</p>
+				</div>
+
+				<div class="concept-card">
+					<h3><span class="concept-icon">🌐</span> Remote Repository</h3>
+					<p>A copy of your repository hosted on a server (like GitHub) that you can share with others and sync changes.</p>
+				</div>
+			</div>
+
+			<div class="git-flow">
+				<div class="git-stage">Working Directory</div>
+				<span class="arrow">→</span>
+				<div class="git-stage">Staging Area</div>
+				<span class="arrow">→</span>
+				<div class="git-stage">Repository</div>
+				<span class="arrow">→</span>
+				<div class="git-stage">Remote</div>
+			</div>
+
+			<div class="tip">
+				<strong>💡 Key Insight:</strong> Git tracks changes, not files. Every commit represents what changed since the last commit, making it incredibly efficient for version control.
+			</div>
+		</div>
+
+		<!-- Commands Section -->
+		<div id="commands" class="content">
+			<h2>⚡ Essential Git Commands</h2>
+
+			<div class="command-grid">
+				<div class="command-card">
+					<h4>🏗️ Repository Setup</h4>
+					<div class="command-example">
+						<span class="command">git init</span><br>
+						<span class="comment"># Initialize a new repository</span><br><br>
+						<span class="command">git clone &lt;url&gt;</span><br>
+						<span class="comment"># Copy a repository from remote</span>
+					</div>
+				</div>
+
+				<div class="command-card">
+					<h4>📊 Check Status & History</h4>
+					<div class="command-example">
+						<span class="command">git status</span><br>
+						<span class="comment"># Show file changes and staging status</span><br><br>
+						<span class="command">git log --oneline</span><br>
+						<span class="comment"># Show commit history (compact)</span><br><br>
+						<span class="command">git diff</span><br>
+						<span class="comment"># Show unstaged changes</span>
+					</div>
+				</div>
+
+				<div class="command-card">
+					<h4>📦 Staging & Committing</h4>
+					<div class="command-example">
+						<span class="command">git add .</span><br>
+						<span class="comment"># Stage all changes</span><br><br>
+						<span class="command">git add &lt;file&gt;</span><br>
+						<span class="comment"># Stage specific file</span><br><br>
+						<span class="command">git commit -m "message"</span><br>
+						<span class="comment"># Commit staged changes</span>
+					</div>
+				</div>
+
+				<div class="command-card">
+					<h4>🌿 Branch Management</h4>
+					<div class="command-example">
+						<span class="command">git branch</span><br>
+						<span class="comment"># List all branches</span><br><br>
+						<span class="command">git checkout -b &lt;branch&gt;</span><br>
+						<span class="comment"># Create and switch to new branch</span><br><br>
+						<span class="command">git merge &lt;branch&gt;</span><br>
+						<span class="comment"># Merge branch into current branch</span>
+					</div>
+				</div>
+
+				<div class="command-card">
+					<h4>🌐 Remote Operations</h4>
+					<div class="command-example">
+						<span class="command">git push origin &lt;branch&gt;</span><br>
+						<span class="comment"># Upload changes to remote</span><br><br>
+						<span class="command">git pull</span><br>
+						<span class="comment"># Download and merge remote changes</span><br><br>
+						<span class="command">git fetch</span><br>
+						<span class="comment"># Download remote changes (no merge)</span>
+					</div>
+				</div>
+
+				<div class="command-card">
+					<h4>🔧 Undoing Changes</h4>
+					<div class="command-example">
+						<span class="command">git reset HEAD &lt;file&gt;</span><br>
+						<span class="comment"># Unstage file</span><br><br>
+						<span class="command">git checkout -- &lt;file&gt;</span><br>
+						<span class="comment"># Discard changes in working directory</span><br><br>
+						<span class="command">git revert &lt;commit&gt;</span><br>
+						<span class="comment"># Safely undo a commit</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="best-practice">
+				<strong>✨ Pro Tips:</strong>
+				<ul style="margin-top: 10px; margin-left: 20px;">
+					<li>Use <code>git status</code> frequently to understand your current state</li>
+					<li>Write clear, descriptive commit messages</li>
+					<li>Commit often with small, logical changes</li>
+					<li>Always pull before pushing to avoid conflicts</li>
+				</ul>
+			</div>
+		</div>
+
+		<!-- Workflows Section -->
+		<div id="workflows" class="content">
+			<h2>🔄 Git Workflows</h2>
+
+			<div class="workflow-step">
+				<h4>1. 🏗️ Feature Branch Workflow</h4>
+				<p>The most common workflow for team development:</p>
+				<div class="command-example">
+					<span class="command">git checkout main</span><br>
+					<span class="command">git pull origin main</span><br>
+					<span class="command">git checkout -b feature/new-feature</span><br>
+					<span class="comment"># Work on your feature...</span><br>
+					<span class="command">git add .</span><br>
+					<span class="command">git commit -m "Add new feature"</span><br>
+					<span class="command">git push origin feature/new-feature</span><br>
+					<span class="comment"># Create pull request on GitHub</span>
+				</div>
+			</div>
+
+			<div class="workflow-step">
+				<h4>2. 🔄 Daily Development Cycle</h4>
+				<p>Your everyday git routine:</p>
+				<div class="command-example">
+					<span class="command">git status</span> <span class="comment"># Check what's changed</span><br>
+					<span class="command">git add &lt;files&gt;</span> <span class="comment"># Stage changes</span><br>
+					<span class="command">git commit -m "Clear message"</span><br>
+					<span class="command">git push</span> <span class="comment"># Share your work</span>
+				</div>
+			</div>
+
+			<div class="workflow-step">
+				<h4>3. 🚨 Handling Merge Conflicts</h4>
+				<p>When Git can't automatically merge changes:</p>
+				<div class="command-example">
+					<span class="command">git pull</span> <span class="comment"># Triggers conflict</span><br>
+					<span class="comment"># Edit conflicted files manually</span><br>
+					<span class="command">git add &lt;resolved-files&gt;</span><br>
+					<span class="command">git commit -m "Resolve merge conflict"</span>
+				</div>
+			</div>
+
+			<div class="visual-diagram">
+				<strong>Typical Conflict Resolution:</strong><br>
+				<<<<<<< HEAD<br>
+				Your changes<br>
+				=======<br>
+				Someone else's changes<br>
+				>>>>>>> branch-name<br><br>
+				<em>Choose one, combine both, or write something new!</em>
+			</div>
+
+			<div class="tip">
+				<strong>💡 Workflow Tips:</strong>
+				<ul style="margin-top: 10px; margin-left: 20px;">
+					<li>Keep branches focused on single features</li>
+					<li>Merge or rebase regularly to stay current</li>
+					<li>Use descriptive branch names like <code>feature/user-login</code></li>
+					<li>Test before merging to main branch</li>
+				</ul>
+			</div>
+		</div>
+
+		<!-- Best Practices Section -->
+		<div id="bestpractices" class="content">
+			<h2>✨ Git Best Practices</h2>
+
+			<div class="best-practice">
+				<h4>📝 Commit Message Guidelines</h4>
+				<div class="command-example">
+					<span class="comment"># Good commit messages:</span><br>
+					<span class="command">"Add user authentication system"</span><br>
+					<span class="command">"Fix navigation bug on mobile devices"</span><br>
+					<span class="command">"Update dependencies to latest versions"</span><br><br>
+					<span class="comment"># Bad commit messages:</span><br>
+					"fix" | "update" | "changes" | "stuff"
+				</div>
+			</div>
+
+			<div class="best-practice">
+				<h4>🏗️ Repository Structure</h4>
+				<ul style="margin-left: 20px; margin-top: 10px;">
+					<li><strong>README.md</strong> - Always include project description</li>
+					<li><strong>.gitignore</strong> - Exclude unnecessary files</li>
+					<li><strong>Consistent naming</strong> - Use clear file and folder names</li>
+					<li><strong>Small commits</strong> - One logical change per commit</li>
+				</ul>
+			</div>
+
+			<div class="warning">
+				<h4>⚠️ Common Mistakes to Avoid</h4>
+				<ul style="margin-left: 20px; margin-top: 10px;">
+					<li><strong>Don't commit sensitive data</strong> (passwords, API keys)</li>
+					<li><strong>Don't commit large binary files</strong> (videos, compiled code)</li>
+					<li><strong>Don't force push to shared branches</strong> (breaks others' work)</li>
+					<li><strong>Don't work directly on main branch</strong> (use feature branches)</li>
+				</ul>
+			</div>
+
+			<div class="tip">
+				<h4>🎯 Advanced Tips</h4>
+				<div class="command-example">
+					<span class="comment"># Useful aliases to add to your git config:</span><br>
+					<span class="command">git config --global alias.st status</span><br>
+					<span class="command">git config --global alias.co checkout</span><br>
+					<span class="command">git config --global alias.br branch</span><br>
+					<span class="command">git config --global alias.lg "log --oneline --graph"</span>
+				</div>
+			</div>
+
+			<div class="concept-card">
+				<h3>📊 .gitignore Essentials</h3>
+				<div class="command-example">
+					<span class="comment"># Common .gitignore patterns:</span><br>
+					node_modules/<br>
+					*.log<br>
+					.env<br>
+					.DS_Store<br>
+					build/<br>
+					dist/<br>
+					*.tmp
+				</div>
+			</div>
+		</div>
+
+		<!-- Troubleshooting Section -->
+		<div id="troubleshooting" class="content">
+			<h2>🔧 Git Troubleshooting</h2>
+
+			<div class="concept-grid">
+				<div class="concept-card">
+					<h3>🚨 "I committed to the wrong branch"</h3>
+					<div class="command-example">
+						<span class="comment"># Move recent commits to correct branch:</span><br>
+						<span class="command">git checkout correct-branch</span><br>
+						<span class="command">git cherry-pick &lt;commit-hash&gt;</span><br>
+						<span class="command">git checkout wrong-branch</span><br>
+						<span class="command">git reset --hard HEAD~1</span>
+					</div>
+				</div>
+
+				<div class="concept-card">
+					<h3>💥 "I need to undo my last commit"</h3>
+					<div class="command-example">
+						<span class="comment"># Keep changes, undo commit:</span><br>
+						<span class="command">git reset --soft HEAD~1</span><br><br>
+						<span class="comment"># Discard everything:</span><br>
+						<span class="command">git reset --hard HEAD~1</span>
+					</div>
+				</div>
+
+				<div class="concept-card">
+					<h3>🔄 "My branch is behind/ahead"</h3>
+					<div class="command-example">
+						<span class="comment"># Update your branch:</span><br>
+						<span class="command">git fetch origin</span><br>
+						<span class="command">git rebase origin/main</span><br><br>
+						<span class="comment"># Or merge instead:</span><br>
+						<span class="command">git pull origin main</span>
+					</div>
+				</div>
+
+				<div class="concept-card">
+					<h3>🎯 "I want to see what changed"</h3>
+					<div class="command-example">
+						<span class="command">git diff</span> <span class="comment"># Unstaged changes</span><br>
+						<span class="command">git diff --staged</span> <span class="comment"># Staged changes</span><br>
+						<span class="command">git show &lt;commit&gt;</span> <span class="comment"># Specific commit</span><br>
+						<span class="command">git log --stat</span> <span class="comment"># Files changed</span>
+					</div>
+				</div>
+
+				<div class="concept-card">
+					<h3>🗑️ "I want to discard changes"</h3>
+					<div class="command-example">
+						<span class="comment"># Discard unstaged changes:</span><br>
+						<span class="command">git checkout -- &lt;file&gt;</span><br>
+						<span class="command">git checkout .</span> <span class="comment"># All files</span><br><br>
+						<span class="comment"># Unstage files:</span><br>
+						<span class="command">git reset HEAD &lt;file&gt;</span>
+					</div>
+				</div>
+
+				<div class="concept-card">
+					<h3>🕰️ "I need to go back in time"</h3>
+					<div class="command-example">
+						<span class="comment"># Temporarily checkout old commit:</span><br>
+						<span class="command">git checkout &lt;commit-hash&gt;</span><br><br>
+						<span class="comment"># Create branch from old commit:</span><br>
+						<span class="command">git checkout -b fix-branch &lt;commit&gt;</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="warning">
+				<h4>⚠️ Emergency Commands (Use Carefully!)</h4>
+				<div class="command-example">
+					<span class="command">git reflog</span> <span class="comment"># Shows all recent actions (lifesaver!)</span><br>
+					<span class="command">git fsck --full</span> <span class="comment"># Check repository integrity</span><br>
+					<span class="command">git gc</span> <span class="comment"># Clean up repository</span>
+				</div>
+			</div>
+
+			<div class="tip">
+				<strong>💡 Prevention is better than cure:</strong> Always use <code>git status</code> before committing and <code>git log --oneline</code> to understand your current state!
+			</div>
+		</div>
+
+		<!-- Quiz Section -->
+		<div id="quiz" class="content">
+			<h2>🎯 Test Your Git Knowledge</h2>
+
+			<!-- Quiz Navigation -->
+			<div class="quiz-nav">
+				<button class="quiz-nav-btn active" onclick="showQuizCategory('beginner')">🌱 Beginner</button>
+				<button class="quiz-nav-btn" onclick="showQuizCategory('intermediate')">🚀 Intermediate</button>
+				<button class="quiz-nav-btn" onclick="showQuizCategory('advanced')">🎯 Advanced</button>
+				<button class="quiz-nav-btn" onclick="showQuizCategory('scenarios')">💡 Scenarios</button>
+			</div>
+
+			<!-- Beginner Quiz -->
+			<div id="beginner" class="quiz-category active">
+				<h3>🌱 Beginner Level - Git Basics</h3>
+				<div class="quiz-section">
+					<div class="quiz-question">
+						<h4>1. What does 'git add .' do?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">A) Commits all changes</div>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">B) Stages all changes in the current directory</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) Creates a new repository</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) Pushes changes to remote</div>
+					</div>
+
+					<div class="quiz-question">
+						<h4>2. What is a Git repository?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">A) A folder containing only source code</div>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">B) A directory that tracks changes to files over time</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) A remote server hosting code</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) A backup of your project</div>
+					</div>
+
+					<div class="quiz-question">
+						<h4>3. Which command creates a new Git repository?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">A) git init</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">B) git create</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) git new</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) git start</div>
+					</div>
+
+					<div class="quiz-question">
+						<h4>4. What does 'git status' show?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">A) The current branch only</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">B) All commits in the repository</div>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">C) Current state of working directory and staging area</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) Remote repository information</div>
+					</div>
+
+					<div class="quiz-question">
+						<h4>5. What happens when you create a new branch?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">A) It deletes the current branch</div>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">B) It creates a copy of the current branch's history</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) It merges with the main branch</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) It creates a new repository</div>
+					</div>
+
+					<div class="quiz-question">
+						<h4>6. Which file tells Git what to ignore?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">A) .gitignore</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">B) .ignore</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) gitignore.txt</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) .exclude</div>
+					</div>
+
+					<div class="quiz-question">
+						<h4>7. What is the staging area?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">A) Where commits are stored</div>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">B) A preparation area for files before committing</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) The remote repository</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) A backup location</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Intermediate Quiz -->
+			<div id="intermediate" class="quiz-category">
+				<h3>🚀 Intermediate Level - Workflows & Operations</h3>
+				<div class="quiz-section">
+					<div class="quiz-question">
+						<h4>1. What's the difference between 'git pull' and 'git fetch'?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">A) They do exactly the same thing</div>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">B) Pull downloads and merges, fetch only downloads</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) Fetch is faster than pull</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) Pull works with branches, fetch doesn't</div>
+					</div>
+
+					<div class="quiz-question">
+						<h4>2. Which command safely undoes a commit that's already been shared?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">A) git reset --hard HEAD~1</div>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">B) git revert &lt;commit-hash&gt;</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) git delete &lt;commit-hash&gt;</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) git remove --commit</div>
+					</div>
+
+					<div class="quiz-question">
+						<h4>3. What should you do before pushing your changes?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">A) Delete old branches</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">B) Create a backup</div>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">C) Pull the latest changes from remote</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) Reset your local repository</div>
+					</div>
+
+					<div class="quiz-question">
+						<h4>4. What does 'git merge' do?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">A) Combines changes from two branches</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">B) Creates a new branch</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) Deletes a branch</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) Pushes changes to remote</div>
+					</div>
+
+					<div class="quiz-question">
+						<h4>5. When do merge conflicts occur?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">A) When you create a new branch</div>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">B) When Git can't automatically merge changes to the same lines</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) When you commit changes</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) When you switch branches</div>
+					</div>
+
+					<div class="quiz-question">
+						<h4>6. What does 'git checkout -b feature' do?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">A) Switches to existing branch 'feature'</div>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">B) Creates and switches to new branch 'feature'</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) Deletes branch 'feature'</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) Merges branch 'feature'</div>
+					</div>
+
+					<div class="quiz-question">
+						<h4>7. What is the difference between 'git reset --soft' and 'git reset --hard'?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">A) --soft keeps changes staged, --hard discards all changes</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">B) --soft is faster than --hard</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) They do the same thing</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) --soft works on remote, --hard works locally</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Advanced Quiz -->
+			<div id="advanced" class="quiz-category">
+				<h3>🎯 Advanced Level - Expert Operations</h3>
+				<div class="quiz-section">
+					<div class="quiz-question">
+						<h4>1. What does 'git rebase -i HEAD~3' do?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">A) Merges the last 3 commits</div>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">B) Opens interactive mode to edit the last 3 commits</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) Deletes the last 3 commits</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) Creates 3 new branches</div>
+					</div>
+
+					<div class="quiz-question">
+						<h4>2. What is the purpose of 'git stash'?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">A) To permanently delete changes</div>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">B) To temporarily save changes without committing</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) To create a new branch</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) To push changes to remote</div>
+					</div>
+
+					<div class="quiz-question">
+						<h4>3. What does 'git cherry-pick' do?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">A) Applies a specific commit from another branch</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">B) Selects the best commits automatically</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) Removes unwanted commits</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) Merges all branches</div>
+					</div>
+
+					<div class="quiz-question">
+						<h4>4. When should you use 'git rebase' instead of 'git merge'?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">A) Never, merge is always better</div>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">B) When you want a linear commit history</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) Only on public branches</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) When working with remote repositories</div>
+					</div>
+
+					<div class="quiz-question">
+						<h4>5. What does 'git bisect' help you find?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">A) Missing files</div>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">B) The commit that introduced a bug</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) Merge conflicts</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) Unused branches</div>
+					</div>
+
+					<div class="quiz-question">
+						<h4>6. What is a 'detached HEAD' state?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">A) When Git is corrupted</div>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">B) When HEAD points to a commit instead of a branch</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) When you're not connected to internet</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) When there are no commits</div>
+					</div>
+
+					<div class="quiz-question">
+						<h4>7. What does 'git reflog' show?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">A) Remote repository logs</div>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">B) A log of all recent actions in your local repository</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) Only merge commit logs</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) Branch creation logs</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Scenario Quiz -->
+			<div id="scenarios" class="quiz-category">
+				<h3>💡 Real-World Scenarios</h3>
+				<div class="quiz-section">
+					<div class="quiz-question">
+						<h4>1. You accidentally committed sensitive data (API keys). What's the best approach?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">A) Just add .gitignore and commit again</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">B) Delete the repository and start over</div>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">C) Use git filter-branch or BFG Repo-Cleaner to rewrite history</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) Ignore it, it's already committed</div>
+					</div>
+
+					<div class="quiz-question">
+						<h4>2. Your teammate pushed code while you were working. How do you integrate their changes?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">A) Force push your changes</div>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">B) Pull their changes first, resolve conflicts, then push</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) Create a new repository</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) Work on a different project</div>
+					</div>
+
+					<div class="quiz-question">
+						<h4>3. You need to work on a hotfix while having unfinished feature work. What should you do?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">A) Commit the unfinished work</div>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">B) Stash your changes, switch to hotfix branch, then stash pop later</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) Delete all unfinished work</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) Work on hotfix in the same branch</div>
+					</div>
+
+					<div class="quiz-question">
+						<h4>4. You want to keep your feature branch up to date with main without merge commits. What do you use?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">A) git merge main</div>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">B) git rebase main</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) git cherry-pick main</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) git reset --hard main</div>
+					</div>
+
+					<div class="quiz-question">
+						<h4>5. A file is showing up in git status but should be ignored. The file is already in .gitignore. Why?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">A) .gitignore is corrupted</div>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">B) The file was tracked before being added to .gitignore</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) Git is not working properly</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) .gitignore syntax is wrong</div>
+					</div>
+
+					<div class="quiz-question">
+						<h4>6. Your last 3 commits have messy commit messages. How do you clean them up?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">A) Delete and recreate commits</div>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">B) Use git rebase -i HEAD~3 to reword/squash</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) Create new commits with better messages</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) Leave them as is</div>
+					</div>
+
+					<div class="quiz-question">
+						<h4>7. You need to see exactly who changed a specific line in a file and when. Which command helps?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">A) git log</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">B) git diff</div>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">C) git blame</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) git status</div>
+					</div>
+
+					<div class="quiz-question">
+						<h4>8. Your repository has become very slow. What might help?</h4>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">A) Delete all branches</div>
+						<div class="quiz-option" onclick="selectAnswer(this, true)">B) Run git gc to garbage collect</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">C) Reinstall Git</div>
+						<div class="quiz-option" onclick="selectAnswer(this, false)">D) Create a new repository</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="quiz-results" id="quizResults">
+				<h3>📊 Quiz Results</h3>
+				<button class="btn" onclick="calculateScore()">Calculate My Score</button>
+				<div id="scoreDisplay"></div>
+			</div>
+
+			<div class="tip">
+				<strong>🎓 Keep Learning:</strong> The best way to master Git is through practice! Try creating test repositories and experimenting with different commands in a safe environment.
 			</div>
 		</div>
 	</div>
 
 	<script>
-		// Utility function to display output
-		function displayOutput(elementId, data, isSuccess = true) {
-			const element = document.getElementById(elementId);
-			element.className = `output ${isSuccess ? 'success' : 'error'}`;
-			element.textContent = data.output || data;
+		function showSection(sectionId) {
+			// Hide all sections
+			const sections = document.querySelectorAll('.content');
+			sections.forEach(section => section.classList.remove('active'));
+
+			// Remove active class from all nav buttons
+			const navBtns = document.querySelectorAll('.nav-btn');
+			navBtns.forEach(btn => btn.classList.remove('active'));
+
+			// Show selected section
+			document.getElementById(sectionId).classList.add('active');
+
+			// Add active class to clicked button
+			event.target.classList.add('active');
 		}
 
-		// Utility function to show loading
-		function showLoading(elementId) {
-			const element = document.getElementById(elementId);
-			element.innerHTML = '<div class="loading"></div> Loading...';
+		// Quiz state tracking
+		let quizScores = {
+			beginner: { correct: 0, total: 0, answered: new Set() },
+			intermediate: { correct: 0, total: 0, answered: new Set() },
+			advanced: { correct: 0, total: 0, answered: new Set() },
+			scenarios: { correct: 0, total: 0, answered: new Set() }
+		};
+
+		function showQuizCategory(categoryId) {
+			// Hide all quiz categories
+			const categories = document.querySelectorAll('.quiz-category');
+			categories.forEach(category => category.classList.remove('active'));
+
+			// Remove active class from all nav buttons
+			const navBtns = document.querySelectorAll('.quiz-nav-btn');
+			navBtns.forEach(btn => btn.classList.remove('active'));
+
+			// Show selected category
+			document.getElementById(categoryId).classList.add('active');
+
+			// Add active class to clicked button
+			event.target.classList.add('active');
 		}
 
-		// API call wrapper
-		async function apiCall(url, options = {}) {
-			try {
-				const response = await fetch(url, options);
-				const data = await response.json();
-				return data;
-			} catch (error) {
-				return { success: false, output: `Error: ${error.message}` };
-			}
-		}
+		function selectAnswer(element, isCorrect) {
+			// Get question info
+			const question = element.parentElement;
+			const questionNumber = question.querySelector('h4').textContent.split('.')[0];
+			const category = question.closest('.quiz-category').id;
+			const questionId = `${category}-${questionNumber}`;
 
-		// Git Status
-		async function getGitStatus() {
-			showLoading('statusOutput');
-			const data = await apiCall('/api/git/status');
-			const statusText = data.output || 'Working tree clean';
-			const indicator = data.success && !data.output ?
-				'<span class="status-indicator status-clean"></span>Clean' :
-				'<span class="status-indicator status-dirty"></span>Changes detected';
-			displayOutput('statusOutput', `${indicator}\n\n${statusText}`, data.success);
-		}
-
-		// Git Log
-		async function getGitLog() {
-			showLoading('logOutput');
-			const data = await apiCall('/api/git/log');
-			displayOutput('logOutput', data.output || 'No commits found', data.success);
-		}
-
-		// Git Branches
-		async function getGitBranches() {
-			showLoading('branchOutput');
-			const data = await apiCall('/api/git/branches');
-			displayOutput('branchOutput', data.output || 'No branches found', data.success);
-		}
-
-		// Git Remotes
-		async function getGitRemotes() {
-			showLoading('remoteOutput');
-			const data = await apiCall('/api/git/remotes');
-			displayOutput('remoteOutput', data.output || 'No remotes configured', data.success);
-		}
-
-		// Git Diff
-		async function getGitDiff() {
-			showLoading('statusOutput');
-			const data = await apiCall('/api/git/diff');
-			displayOutput('statusOutput', data.output || 'No changes detected', data.success);
-		}
-
-		// Create Branch
-		async function createBranch() {
-			const branchName = document.getElementById('newBranchName').value.trim();
-			if (!branchName) {
-				alert('Please enter a branch name');
-				return;
-			}
-
-			showLoading('branchOutput');
-			const data = await apiCall('/api/git/branch', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ branchName })
+			// Remove previous selections in this question
+			const options = question.querySelectorAll('.quiz-option');
+			options.forEach(option => {
+				option.classList.remove('correct', 'incorrect');
+				option.style.pointerEvents = 'auto';
 			});
-			displayOutput('branchOutput', data.output, data.success);
-			document.getElementById('newBranchName').value = '';
-		}
 
-		// Switch Branch
-		async function switchBranch() {
-			const branchName = document.getElementById('switchBranchName').value.trim();
-			if (!branchName) {
-				alert('Please enter a branch name');
-				return;
-			}
-
-			showLoading('branchOutput');
-			const data = await apiCall('/api/git/checkout', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ branchName })
-			});
-			displayOutput('branchOutput', data.output, data.success);
-			document.getElementById('switchBranchName').value = '';
-		}
-
-		// Commit Changes
-		async function commitChanges() {
-			const message = document.getElementById('commitMessage').value.trim();
-			const files = document.getElementById('filesToAdd').value.trim();
-
-			if (!message) {
-				alert('Please enter a commit message');
-				return;
-			}
-
-			showLoading('commitOutput');
-			const data = await apiCall('/api/git/commit', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({
-					message,
-					files: files ? files.split(' ') : ['.']
-				})
-			});
-			displayOutput('commitOutput', data.output, data.success);
-
-			if (data.success) {
-				document.getElementById('commitMessage').value = '';
-				document.getElementById('filesToAdd').value = '';
-			}
-		}
-
-		// Get Git Config
-		async function getGitConfig() {
-			showLoading('configOutput');
-			const data = await apiCall('/api/git/info');
-			if (data.config) {
-				displayOutput('configOutput', data.config.output || 'No local config found', data.config.success);
+			// Mark the selected answer
+			if (isCorrect) {
+				element.classList.add('correct');
+				// Update score if not already answered
+				if (!quizScores[category].answered.has(questionId)) {
+					quizScores[category].correct++;
+				}
 			} else {
-				displayOutput('configOutput', 'Not a git repository', false);
+				element.classList.add('incorrect');
+				// Also show the correct answer
+				options.forEach(option => {
+					if (option.onclick.toString().includes('true')) {
+						option.classList.add('correct');
+					}
+				});
 			}
+
+			// Mark as answered and increment total
+			if (!quizScores[category].answered.has(questionId)) {
+				quizScores[category].answered.add(questionId);
+				quizScores[category].total++;
+			}
+
+			// Disable further clicks on this question
+			options.forEach(option => {
+				option.style.pointerEvents = 'none';
+			});
+
+			// Show immediate feedback
+			setTimeout(() => {
+				if (isCorrect) {
+					showFeedback(question, '✅ Correct! Great job!', 'success');
+				} else {
+					showFeedback(question, '❌ Not quite right. The correct answer is highlighted.', 'error');
+				}
+			}, 500);
 		}
 
-		// Load repository info on page load
-		async function loadRepoInfo() {
-			const data = await apiCall('/api/git/info');
-			const repoDetails = document.getElementById('repoDetails');
+		function showFeedback(questionElement, message, type) {
+			// Remove any existing feedback
+			const existingFeedback = questionElement.querySelector('.feedback');
+			if (existingFeedback) {
+				existingFeedback.remove();
+			}
 
-			if (data.isGitRepo) {
-				repoDetails.innerHTML = `
-					<p><strong>📁 Path:</strong> ${data.repositoryPath}</p>
-					<p><strong>✅ Git Repository:</strong> Yes</p>
-					<p><strong>📂 Git Directory:</strong> ${data.gitDir}</p>
-				`;
+			// Create new feedback element
+			const feedback = document.createElement('div');
+			feedback.className = `feedback ${type}`;
+			feedback.style.cssText = `
+				margin-top: 10px;
+				padding: 10px 15px;
+				border-radius: 5px;
+				font-weight: 500;
+				background: ${type === 'success' ? '#48bb78' : '#f56565'};
+				color: white;
+				animation: slideIn 0.3s ease;
+			`;
+			feedback.textContent = message;
+			questionElement.appendChild(feedback);
+
+			// Remove feedback after 3 seconds
+			setTimeout(() => {
+				if (feedback.parentNode) {
+					feedback.remove();
+				}
+			}, 3000);
+		}
+
+		function calculateScore() {
+			let totalCorrect = 0;
+			let totalAnswered = 0;
+			let categoryScores = [];
+
+			// Calculate scores for each category
+			Object.keys(quizScores).forEach(category => {
+				const score = quizScores[category];
+				if (score.total > 0) {
+					const percentage = Math.round((score.correct / score.total) * 100);
+					categoryScores.push({
+						name: category.charAt(0).toUpperCase() + category.slice(1),
+						correct: score.correct,
+						total: score.total,
+						percentage: percentage
+					});
+					totalCorrect += score.correct;
+					totalAnswered += score.total;
+				}
+			});
+
+			if (totalAnswered === 0) {
+				document.getElementById('scoreDisplay').innerHTML =
+					'<p style="color: #666; font-style: italic;">Answer some questions first to see your score!</p>';
+				return;
+			}
+
+			const overallPercentage = Math.round((totalCorrect / totalAnswered) * 100);
+
+			// Generate score display
+			let scoreHTML = `
+				<div class="score-summary">
+					<h4>Overall Score: ${totalCorrect}/${totalAnswered} (${overallPercentage}%)</h4>
+				</div>
+			`;
+
+			// Add category breakdown
+			if (categoryScores.length > 1) {
+				scoreHTML += '<div class="category-scores"><h5>Category Breakdown:</h5>';
+				categoryScores.forEach(cat => {
+					const difficultyClass = getDifficultyClass(cat.name.toLowerCase());
+					scoreHTML += `
+						<div class="category-score">
+							<span class="difficulty-indicator ${difficultyClass}">
+								${getEmoji(cat.name)} ${cat.name}
+							</span>
+							${cat.correct}/${cat.total} (${cat.percentage}%)
+						</div>
+					`;
+				});
+				scoreHTML += '</div>';
+			}
+
+			// Add performance feedback
+			let performanceClass, performanceMessage;
+			if (overallPercentage >= 85) {
+				performanceClass = 'score-excellent';
+				performanceMessage = '🎉 Excellent! You have a strong understanding of Git concepts!';
+			} else if (overallPercentage >= 70) {
+				performanceClass = 'score-good';
+				performanceMessage = '👍 Good job! You understand most Git concepts well.';
 			} else {
-				repoDetails.innerHTML = `
-					<p><strong>📁 Path:</strong> ${data.repositoryPath}</p>
-					<p><strong>❌ Git Repository:</strong> No (.git directory not found)</p>
+				performanceClass = 'score-needs-improvement';
+				performanceMessage = '📚 Keep studying! Review the concepts and try again.';
+			}
+
+			scoreHTML += `<div class="${performanceClass}">${performanceMessage}</div>`;
+
+			// Add recommendations
+			if (overallPercentage < 85) {
+				scoreHTML += `
+					<div class="recommendations">
+						<h5>💡 Recommendations:</h5>
+						<ul>
+							<li>Review the sections where you scored lower</li>
+							<li>Practice with a test repository</li>
+							<li>Try the commands in a safe environment</li>
+							<li>Read Git documentation for advanced topics</li>
+						</ul>
+					</div>
 				`;
 			}
+
+			document.getElementById('scoreDisplay').innerHTML = scoreHTML;
 		}
 
-		// Initialize page
-		document.addEventListener('DOMContentLoaded', () => {
-			loadRepoInfo();
-			getGitStatus();
+		function getDifficultyClass(category) {
+			const map = {
+				'beginner': 'difficulty-beginner',
+				'intermediate': 'difficulty-intermediate',
+				'advanced': 'difficulty-advanced',
+				'scenarios': 'difficulty-scenarios'
+			};
+			return map[category] || 'difficulty-beginner';
+		}
+
+		function getEmoji(category) {
+			const map = {
+				'Beginner': '🌱',
+				'Intermediate': '🚀',
+				'Advanced': '🎯',
+				'Scenarios': '💡'
+			};
+			return map[category] || '📚';
+		}
+
+		// Add CSS animation for feedback
+		const style = document.createElement('style');
+		style.textContent = `
+			@keyframes slideIn {
+				from { opacity: 0; transform: translateY(-10px); }
+				to { opacity: 1; transform: translateY(0); }
+			}
+			.category-score {
+				margin: 8px 0;
+				padding: 8px;
+				background: #f8f9fa;
+				border-radius: 5px;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+			}
+			.recommendations ul {
+				text-align: left;
+				margin-left: 20px;
+				margin-top: 10px;
+			}
+			.score-summary {
+				font-size: 1.2em;
+				margin-bottom: 20px;
+				color: #2d3748;
+			}
+		`;
+		document.head.appendChild(style);
+
+		// Add some interactive features
+		document.addEventListener('DOMContentLoaded', function() {
+			// Add copy functionality to code blocks
+			const codeBlocks = document.querySelectorAll('.command-example');
+			codeBlocks.forEach(block => {
+				block.addEventListener('click', function() {
+					const text = this.textContent;
+					navigator.clipboard.writeText(text).then(() => {
+						this.style.backgroundColor = '#2a4a3a';
+						setTimeout(() => {
+							this.style.backgroundColor = '#2d3748';
+						}, 500);
+					}).catch(() => {
+						console.log('Could not copy text');
+					});
+				});
+
+				// Add hover effect
+				block.style.cursor = 'pointer';
+				block.title = 'Click to copy';
+			});
 		});
 	</script>
 </body>

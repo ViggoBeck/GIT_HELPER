@@ -1,13 +1,13 @@
 {
-	"name": "local-git-explorer",
+	"name": "git-education-center",
 	"version": "1.0.0",
-	"description": "A Node.js app to explore local git repository functionality",
+	"description": "A comprehensive Git learning platform with interactive tutorials, quizzes, and AI safety practices",
 	"main": "app.js",
 	"scripts": {
 		"start": "node app.js",
 		"dev": "nodemon app.js"
 	},
-	"keywords": ["git", "nodejs", "express", "repository", "explorer"],
+	"keywords": ["git", "education", "learning", "tutorial", "quiz", "ai-safety", "nodejs", "express"],
 	"author": "",
 	"license": "MIT",
 	"dependencies": {
